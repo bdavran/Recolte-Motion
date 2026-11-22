@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "name": "Pear (pear.no) -> Recolte transfer",
+    "references": ["https://pear.no/ (browsed live, 8 scroll positions, computed styles read)", "Kafe-Turu-Seedance-25s.mp4 (4 frames measured)"],
+    "note": "Pear supplies rhythm, pacing and typographic contrast. Colour is NOT taken from Pear: it is measured from the Recolte cafe footage with design-dna/scripts/measure-colors.mjs."
+  },
+  "design_system": {
+    "color": {
+      "pear_observed": { "ground": "#0b0a09", "paper": "#f2f1ed", "sky": "#015186", "warm_ink": "#2e2109", "cream_text": "#fffaea" },
+      "measured_palette": {
+        "door_t1":  ["#4c3024", "#27160f", "#bab2af", "#966659", "#6b4941", "#deceba"],
+        "bar_t6":   ["#a96e44", "#351d0e", "#65371f", "#8a5034", "#c78a59", "#f0e9df", "#e3af7e"],
+        "room_t15": ["#c1947c", "#221b15", "#8c5f46", "#443122", "#cab7ac", "#f6f1ed"],
+        "lounge_t22": ["#231b16", "#5a4231", "#353329", "#af8e6d", "#c6aa92", "#e7d4c8"]
+      },
+      "measurement": { "k": 8, "sampling": "deterministic_stratified", "max_pixels": 160000 },
+      "surface": { "linen": "#f0e9df", "milk_mist": "#e7d4c8", "graphite": "#221b15", "graphite_raised": "#2c241d", "leather": "#2f3029" },
+      "accent": { "hex": "#c78a59", "on_light": "#8a5034", "role": "raw bronze: one hue, two lightnesses keyed to ground (page hard-cuts light/dark)" },
+      "support": { "timber": "#a96e44", "stone": "#bab2af" },
+      "neutral": { "scale": ["#f0e9df", "#e7d4c8", "#bab2af", "#5e4b3c", "#2c241d", "#221b15"], "usage": "ink-soft on linen is #5e4b3c; ink-soft on graphite is #c9b8a8" },
+      "override_justification": "Linen/espresso/bronze is a banned default family in design-taste, but the brief names these colours explicitly and every value here is measured from the venue itself."
+    },
+    "typography": {
+      "pear_observed": { "display": "Flecha M/L, weight 300, 55-83px, tracking -0.024em, leading 1.0-1.04", "text": "GT Standard L 16px/24px", "mono": "GT Standard Mono 12px uppercase +0.04em" },
+      "recolte": {
+        "display": "Zodiak 300 (high-contrast editorial serif, Fontshare)",
+        "text": "Switzer 400/500 (disciplined grotesque)",
+        "mono": "Geist Mono 400, lower-case, tabular: only for real data (altitude, coordinates, temperature, grams, time)",
+        "scale_ratio": 1.333,
+        "display_tracking": "-0.022em", "display_leading": 1.02
+      }
+    },
+    "spacing": { "base": "4px", "rhythm": "tight label-to-value (4-8px), generous chapter breaks (clamp 4.5-11rem)", "density": "airy, 2/10" },
+    "layout": { "grid": "12 col, asymmetric 5/7 and 4/8 splits", "max_width": "82rem", "pear_principle": "type anchored to a corner of the image, never centred over it; image owns the frame" },
+    "shape": { "radius": "0 on media and panels; arch (semicircular top) is the single shape motif; 999px only on small toggles" },
+    "elevation": { "approach": "no shadows on content; depth from overlap, scale and blur" },
+    "motion": {
+      "pear_observed": ["cubic-bezier(.22,1,.36,1)", "150-700ms", "scenes resolve from blur to sharp", "page ~53 viewport-heights"],
+      "recolte": { "ease": "cubic-bezier(0.22, 1, 0.36, 1)", "ui": "160-240ms", "scroll": "Lenis inertia (lerp 0.1) + rAF-lerped video playhead", "reduced": "stills crossfade, no translation" }
+    },
+    "components": { "header": "thin, transparent, ink flips with the ground", "buttons": "text + hairline underline; one filled bronze CTA label used everywhere: Start a subscription" }
+  },
+  "design_style": {
+    "aesthetic": "architectural hospitality editorial: quiet, warm, tactile, slow",
+    "visual_language": "arches from the cafe's clay panels, linen paper, stone, bronze hardware",
+    "composition": "image first; typography sits in the corners the footage leaves empty; hard cuts between chapter grounds",
+    "imagery": "only the supplied footage and stills of the real venue",
+    "interaction_feel": "weighted, unhurried, everything interpolates toward the hand",
+    "brand_voice_in_ui": "plain, warm, specific. Real coffees, real notes, real address."
+  },
+  "visual_effects": {
+    "overview": { "effect_intensity": "medium", "performance_tier": "video + 2D only, no WebGL" },
+    "scroll_effects": {
+      "parallax": "hero planes: footage 0.88x scale settle, arch frame fastest, type 1x, light wash 0.5x",
+      "scroll_triggered_animations": "scene copy keyed to the decoded video time, not to a percentage",
+      "scroll_morphing": "arch window opens to full bleed (clip-path inset with elliptical radius)"
+    },
+    "text_effects": "blur-to-sharp entrance on scene copy (Pear-derived)",
+    "cursor_effects": "fine-pointer ring that grows over controls; native cursor kept on inputs",
+    "image_effects": "grain overlay that rises with scroll velocity",
+    "svg_animations": "roast-curve instrument drawn by scroll (signature move)",
+    "composite_notes": "Pear's WebGL halftone/blur transitions are intentionally not reproduced."
+  }
+}

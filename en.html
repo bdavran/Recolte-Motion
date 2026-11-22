@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Récolte Coffee Roastery, Bomonti</title>
+<meta name="description" content="Specialty coffee roasted in Istanbul and poured at our café in Bomonti. Single origins, house blends, a monthly subscription and brew guides.">
+<meta name="theme-color" content="#221b15">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 30V15a10 10 0 0 1 20 0v15z' fill='%23c78a59'/></svg>">
+<link rel="alternate" hreflang="en" href="en.html">
+<link rel="alternate" hreflang="tr" href="index.html">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,300i&f[]=switzer@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="public/img/poster.webp" media="(min-width: 861px)">
+<link rel="preload" as="image" href="public/img/poster-m.webp" media="(max-width: 860px)">
+<link rel="stylesheet" href="scrollcraft.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<a class="skip" href="#origins">Skip to the coffees</a>
+<div class="sc-grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span class="cursor__ring"></span><span class="cursor__dot"></span></div>
+
+<header class="bar" data-bar>
+  <a class="bar__mark" href="#film" aria-label="Récolte Coffee Roastery, back to the door">
+    <span class="bar__word">Récolte</span>
+    <span class="bar__sub">coffee roastery</span>
+  </a>
+  <nav class="bar__nav" aria-label="Main">
+    <a href="#origins">Origins</a>
+    <a href="#ritual">Ritual</a>
+    <a href="#subscribe">Subscription</a>
+    <a href="#brew">Brew guide</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <div class="bar__tools">
+    <button class="tool tool--motion" type="button" data-motion data-on="Play the film" data-off="Reduce motion" aria-pressed="false">Play the film</button>
+    <a class="tool tool--lang" href="index.html" hreflang="tr" lang="tr" aria-label="Türkçe">TR</a>
+    <button class="tool" type="button" data-sound aria-pressed="false"><span class="tool__led" aria-hidden="true"></span><span data-sound-label>Sound off</span></button>
+    <button class="tool" type="button" data-bag-open aria-haspopup="dialog">Bag <span class="tool__count" data-bag-count>0</span></button>
+    <button class="tool tool--menu" type="button" data-menu-open aria-haspopup="dialog">Menu</button>
+  </div>
+</header>
+
+<!-- Signature move: the scroll is a roast. Chapters are roast phases. -->
+<nav class="roast" aria-label="Chapters, drawn as a roast profile" data-roast>
+  <p class="roast__read" aria-live="off">
+    <span class="roast__phase" data-roast-phase>Charge</span>
+    <span class="roast__nums"><span data-roast-bt>200.0</span> °C <span class="roast__sep" aria-hidden="true">/</span> <span data-roast-time>00:00</span></span>
+  </p>
+  <div class="roast__plot">
+    <svg class="roast__svg" viewBox="0 0 240 84" preserveAspectRatio="none" aria-hidden="true">
+      <defs><clipPath id="roastClip"><rect data-roast-clip x="0" y="0" width="0" height="84"/></clipPath></defs>
+      <line class="roast__axis" x1="0" y1="83.5" x2="240" y2="83.5"/>
+      <path class="roast__ghost" data-roast-ghost d=""/>
+      <path class="roast__live" data-roast-live d="" clip-path="url(#roastClip)"/>
+      <circle class="roast__head" data-roast-head r="3" cx="0" cy="0"/>
+    </svg>
+    <ol class="roast__marks" data-roast-marks>
+      <li><a href="#film" data-mark="0" data-target="film"><span>Charge<em>The walk-in</em></span></a></li>
+      <li><a href="#origins" data-mark="4.5" data-target="origins"><span>Yellowing<em>Origins</em></span></a></li>
+      <li><a href="#ritual" data-mark="6.5" data-target="ritual"><span>Maillard<em>Ritual</em></span></a></li>
+      <li><a href="#subscribe" data-mark="8.5" data-target="subscribe"><span>First crack<em>Subscription</em></span></a></li>
+      <li><a href="#brew" data-mark="9.25" data-target="brew"><span>Development<em>Brew guide</em></span></a></li>
+      <li><a href="#visit" data-mark="10" data-target="visit"><span>Drop<em>Visit</em></span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- One world. Nothing below scrolls past as a block: the stage is pinned for
+     the whole track and every chapter arrives inside it. -->
+<main id="film" class="world" data-world>
+  <div class="world__pin t-dark">
+
+    <div class="world__light" aria-hidden="true"></div>
+    <div class="world__slot" aria-hidden="true" data-arch-slot></div>
+
+    <div class="world__window" data-arch>
+      <canvas class="world__gl" data-gl aria-hidden="true"></canvas>
+      <div class="world__stills" aria-hidden="true">
+        <picture><source media="(max-width: 860px)" srcset="public/img/poster-m.webp"><img data-at="0" src="public/img/poster.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s2-m.webp"><img data-at="3.4" src="public/img/s2.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s3-m.webp"><img data-at="11.8" src="public/img/s3.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s4-m.webp"><img data-at="17.6" src="public/img/s4.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s5-m.webp"><img data-at="20.6" src="public/img/s5.webp" alt="" width="1600" height="900"></picture>
+      </div>
+      <div class="world__paper" aria-hidden="true"></div>
+      <div class="shade shade--lead" data-shade-layer="lead" aria-hidden="true"></div>
+      <div class="shade shade--trail" data-shade-layer="trail" aria-hidden="true"></div>
+      <div class="shade shade--band" data-shade-layer="band" aria-hidden="true"></div>
+      <div class="world__top" aria-hidden="true"></div>
+    </div>
+    <video class="world__video" data-film data-src="public/video/walk.mp4" data-src-mobile="public/video/walk-m.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+
+    <!-- the threshold, on linen -->
+    <div class="hero t-light" data-hero>
+      <p class="hero__where meta"><span>41.0589° N, 28.9813° E</span><span>Bomonti, Istanbul</span></p>
+      <h1 class="hero__title">Every cup begins as a harvest.</h1>
+      <p class="hero__lede">Récolte is French for harvest. We roast single origins in Istanbul and pour them at our café in Bomonti.</p>
+      <div class="hero__actions">
+        <a class="btn btn--solid" href="#subscribe" data-magnetic>Start a subscription</a>
+        <a class="btn btn--line" href="#origins">See the coffees</a>
+      </div>
+    </div>
+
+    <!-- through the doors -->
+    <section class="ch" data-win="1.2 1.7 3.7 4.2" data-shade="lead" aria-label="Harvest">
+      <article class="scene scene--lead">
+        <p class="scene__tag meta">harvest</p>
+        <h2 class="scene__title">Récolte means harvest.</h2>
+        <p class="scene__body">Every bag starts on someone's farm. Red Bourbon grown by women producers in Rwanda, Supremo from the hills of Medellín. We roast to keep that place in the cup.</p>
+        <dl class="scene__data meta">
+          <div><dt>altitude</dt><dd>1,800 masl</dd></div>
+          <div><dt>process</dt><dd>washed</dd></div>
+          <div><dt>cup score</dt><dd>SCA 84.75</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <!-- along the bar -->
+    <section class="ch" data-win="4.4 4.9 7.0 7.5" data-shade="trail" aria-label="Roast">
+      <article class="scene scene--trail">
+        <p class="scene__tag meta">roast</p>
+        <h2 class="scene__title">A dialogue between time and fire.</h2>
+        <p class="scene__body">Each roast is built for its origin. We listen to time, sound and smell until the floral tones or the deep, velvety sweetness come forward.</p>
+        <dl class="scene__data meta">
+          <div><dt>first crack</dt><dd>≈ 196 °C</dd></div>
+          <div><dt>filter</dt><dd>light to medium</dd></div>
+          <div><dt>espresso</dt><dd>medium</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <!-- origins: the bar goes soft and the labels come forward -->
+    <section id="origins" class="ch ch--origins" data-win="7.5 8.3 11.9 12.6" data-rail-range="8.3 11.9" aria-labelledby="origins-h">
+      <div class="rail" data-rail>
+        <div class="rail__lead">
+          <h2 id="origins-h" class="h-chapter">Four coffees, four places.</h2>
+          <p class="body">Two single origins and two house blends from this season's roasts. Open a label to taste it.</p>
+          <p class="meta">250 g bags, roasted to order</p>
+        </div>
+
+        <article class="bean" data-bean="rwanda">
+          <header>
+            <p class="bean__kind meta">single origin <span class="bean__flag">limited</span></p>
+            <h3 class="bean__name">Rwanda Red&nbsp;Bourbon</h3>
+            <p class="bean__where meta">1.94° S, 29.87° E<br>Rwanda, 1,800 masl</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tasting notes"><li>Tangerine</li><li>Kiwi</li><li>Green tea</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>body</dt><dd><span class="pips" style="--v:3" role="img" aria-label="3 of 5"></span></dd></div>
+            <div><dt>acidity</dt><dd><span class="pips" style="--v:4" role="img" aria-label="4 of 5"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-rwanda">Cupping notes</button>
+          <div class="bean__cup" id="cup-rwanda" hidden>
+            <p>Grown at 1,800 m by women producers. Tangerine, kiwi and green tea over a lively acidity and a medium-high body. Washed, so the cup stays clear and balanced.</p>
+            <p class="meta">washed / organic / SCA 84.75<br>brews best as V60, Chemex</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta"><s>₺790</s> ₺632</p>
+            <button class="bean__add" type="button" data-add='{"id":"rwanda","name":"Rwanda Red Bourbon","price":632}'>Add to bag</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="colombia">
+          <header>
+            <p class="bean__kind meta">single origin</p>
+            <h3 class="bean__name">Colombia Supremo Medellín</h3>
+            <p class="bean__where meta">6.24° N, 75.58° W<br>Antioquia, Supremo grade</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tasting notes"><li>Green apple</li><li>Brown sugar</li><li>Cocoa</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>body</dt><dd><span class="pips" style="--v:2" role="img" aria-label="2 of 5"></span></dd></div>
+            <div><dt>acidity</dt><dd><span class="pips" style="--v:4" role="img" aria-label="4 of 5"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-colombia">Cupping notes</button>
+          <div class="bean__cup" id="cup-colombia" hidden>
+            <p>Supremo beans from the Medellín region. A high acidity and fresh aromatics: green apple brightness balanced by brown sugar and cocoa.</p>
+            <p class="meta">supremo, screen 17 and up<br>brews best as V60, Kalita, Aeropress</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺655</p>
+            <button class="bean__add" type="button" data-add='{"id":"colombia","name":"Colombia Supremo Medellín","price":655}'>Add to bag</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="fleur">
+          <header>
+            <p class="bean__kind meta">house blend</p>
+            <h3 class="bean__name">Fleur South&nbsp;America</h3>
+            <p class="bean__where meta">several farms<br>South America</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tasting notes"><li>Cherry</li><li>Caramel</li><li>Cocoa</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>body</dt><dd><span class="pips" style="--v:4" role="img" aria-label="4 of 5"></span></dd></div>
+            <div><dt>acidity</dt><dd><span class="pips" style="--v:2" role="img" aria-label="2 of 5"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-fleur">Cupping notes</button>
+          <div class="bean__cup" id="cup-fleur" hidden>
+            <p>Lively cherry, soft caramel and a trace of cocoa. Clear and floral on its own, layered and silky with milk.</p>
+            <p class="meta">blend<br>brews best as espresso, flat white, filter</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺610</p>
+            <button class="bean__add" type="button" data-add='{"id":"fleur","name":"Fleur South America","price":610}'>Add to bag</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="ember">
+          <header>
+            <p class="bean__kind meta">house blend</p>
+            <h3 class="bean__name">Ember Africa Pasific</h3>
+            <p class="bean__where meta">several farms<br>Africa and the Pacific</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tasting notes"><li>Tobacco</li><li>Nuts</li><li>Cocoa</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>body</dt><dd><span class="pips" style="--v:4" role="img" aria-label="4 of 5"></span></dd></div>
+            <div><dt>acidity</dt><dd><span class="pips" style="--v:1" role="img" aria-label="1 of 5"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-ember">Cupping notes</button>
+          <div class="bean__cup" id="cup-ember" hidden>
+            <p>Heavy body and low acidity. Cocoa and nuts with an earthy warmth and a lingering trace of tobacco, made for the classic espresso tradition.</p>
+            <p class="meta">blend<br>brews best as espresso, moka pot</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺515</p>
+            <button class="bean__add" type="button" data-add='{"id":"ember","name":"Ember Africa Pasific","price":515}'>Add to bag</button>
+          </footer>
+        </article>
+
+        <div class="rail__note">
+          <p class="body">Every coffee leaves the roastery fresh. Delivery is free on orders over ₺1,000.</p>
+          <a class="link" href="https://www.recoltecoffee.com/category/kahveler">See every coffee in the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ritual: three statements while the room opens up -->
+    <section id="ritual" class="ch ch--line" data-win="13.1 13.5 14.6 15.0" data-shade="lead" aria-label="The roastery and café ritual">
+      <h2 class="h-chapter">Roasting is a dialogue between time and fire.</h2>
+    </section>
+    <section class="ch ch--line" data-win="14.9 15.3 16.4 16.8" data-shade="lead">
+      <p class="lede">Each bean carries the soil and the climate it ripened in. Roasting is how we bring that history forward without covering it.</p>
+    </section>
+    <section class="ch ch--line" data-win="16.7 17.1 18.0 18.35" data-shade="lead">
+      <div class="ritual__last">
+        <p class="lede">We stay faithful to the farmer's work. Harvest, roast and the cup in your hand are one story, and you get its freshest chapter.</p>
+        <p class="meta ritual__credit">our harvest is painted too: <i>The Silent Hands</i>, Melek Demirci for Récolte</p>
+        <a class="link" href="https://www.recoltecoffee.com/hikayemiz">Read our story</a>
+      </div>
+    </section>
+
+    <!-- subscription: the room dissolves into linen paper -->
+    <section id="subscribe" class="ch ch--club t-light" data-win="18.6 19.0 21.6 22.0" aria-labelledby="club-h">
+      <div class="club__grid">
+        <div class="club__intro">
+          <h2 id="club-h" class="h-chapter">The harvest, delivered.</h2>
+          <p class="body">Each month our roasters choose what comes to your door. Some lots are sourced only for subscribers; others arrive before their public release.</p>
+          <ul class="club__perks">
+            <li>Micro-lots and special roasts, first</li>
+            <li>Subscriber prices on everything else</li>
+            <li>Pause or cancel whenever you like</li>
+            <li>Free delivery, always</li>
+          </ul>
+        </div>
+        <form class="club__form" data-club onsubmit="return false" aria-describedby="club-sum">
+          <fieldset>
+            <legend>How do you brew?</legend>
+            <div class="seg">
+              <label><input type="radio" name="method" value="filter" checked><span>Filter</span></label>
+              <label><input type="radio" name="method" value="espresso"><span>Espresso</span></label>
+              <label><input type="radio" name="method" value="both"><span>A bit of both</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Bags per delivery <span class="meta">250 g each</span></legend>
+            <div class="seg">
+              <label><input type="radio" name="bags" value="1"><span>1</span></label>
+              <label><input type="radio" name="bags" value="2" checked><span>2</span></label>
+              <label><input type="radio" name="bags" value="3"><span>3</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>How often</legend>
+            <div class="seg">
+              <label><input type="radio" name="every" value="2"><span>Every two weeks</span></label>
+              <label><input type="radio" name="every" value="4" checked><span>Every month</span></label>
+            </div>
+          </fieldset>
+          <div class="club__row">
+            <label class="field">
+              <span class="field__label">Grind</span>
+              <select name="grind">
+                <option value="whole">Whole bean</option>
+                <option value="v60" selected>Ground for V60</option>
+                <option value="chemex">Ground for Chemex</option>
+                <option value="espresso">Ground for espresso</option>
+                <option value="press">Ground for French press</option>
+              </select>
+            </label>
+            <label class="check"><input type="checkbox" name="surprise" checked><span>Include the surprise blend</span></label>
+          </div>
+          <output class="club__sum" id="club-sum" aria-live="polite">
+            <span class="club__sentence" data-club-sentence>Two bags of filter roasts every month, ground for V60, with the surprise blend.</span>
+            <span class="meta" data-club-math>500 g per delivery, about 33 cups at 15 g. 500 g a month.</span>
+          </output>
+          <div class="club__foot">
+            <a class="btn btn--solid" href="https://www.recoltecoffee.com/kahveaboneli%C4%9Fi" data-magnetic>Start a subscription</a>
+            <p class="meta">You finish sign-up on recoltecoffee.com.<br>Nothing is charged here.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- brew: the paper gives way to the espresso machine -->
+    <section id="brew" class="ch ch--brew" data-win="22.6 23.1 25.6 26.1" data-brew-range="23.1 25.5" aria-labelledby="brew-h">
+      <div class="brew__head">
+        <h2 id="brew-h" class="h-chapter">Brew it like the bar does.</h2>
+        <div class="brew__tabs" role="tablist" aria-label="Brew method">
+          <button role="tab" type="button" aria-selected="true" data-method="v60">V60</button>
+          <button role="tab" type="button" aria-selected="false" data-method="chemex" tabindex="-1">Chemex</button>
+          <button role="tab" type="button" aria-selected="false" data-method="espresso" tabindex="-1">Espresso</button>
+        </div>
+        <p class="body brew__how">Scroll and the recipe runs with your hand. Or press play and brew along in real time.</p>
+        <p class="brew__pair meta" data-brew-pair></p>
+      </div>
+      <div class="brew__scale" role="tabpanel" aria-label="Recipe">
+        <div class="brew__readout">
+          <p class="brew__grams"><span data-brew-grams>0</span><span class="brew__unit">g</span></p>
+          <p class="brew__clock meta"><span data-brew-clock>0:00</span> <span data-brew-target>/ 3:00</span></p>
+          <div class="brew__track" aria-hidden="true"><span data-brew-fill></span></div>
+          <button class="btn btn--line brew__play" type="button" data-brew-play aria-pressed="false">Brew along</button>
+        </div>
+        <dl class="brew__recipe meta" data-brew-recipe></dl>
+        <ol class="brew__steps" data-brew-steps></ol>
+      </div>
+      <aside class="brew__workshop">
+        <p class="lede">Learn it at the bar.</p>
+        <p class="body">Barista training for cafés and small home-brewing sessions at Bomonti.</p>
+        <a class="link" href="mailto:info@recoltecoffee.com?subject=Workshop">Ask about the next session</a>
+      </aside>
+    </section>
+
+    <!-- visit: the walk ends in the armchairs, and the page stops -->
+    <section id="visit" class="ch ch--visit" data-win="26.6 27.4 999 1000" data-shade="lead band" aria-labelledby="visit-h">
+      <div class="visit__grid">
+        <div class="visit__lead">
+          <h2 id="visit-h" class="h-chapter">Stay for the second cup.</h2>
+          <p class="lede">Green leather, a stone bar and a quiet corner. Our flagship café sits inside Bomonti Modern Palas.</p>
+          <a class="btn btn--solid" href="https://www.google.com/maps/search/?api=1&amp;query=R%C3%A9colte%20Coffee%20Bomonti%20Modern%20Palas%20%C5%9Ei%C5%9Fli" data-magnetic>Get directions</a>
+        </div>
+        <dl class="visit__facts">
+          <div><dt class="meta">address</dt><dd>Cumhuriyet Mah. Nehir Sk., Bomonti Modern Palas<br>No: 6, İç Kapı No: 79, Şişli, İstanbul</dd></div>
+          <!-- PLACEHOLDER: café hours are not published on recoltecoffee.com. Replace before launch. -->
+          <div><dt class="meta">café</dt><dd>Daily, 08:00 to 20:00</dd></div>
+          <div><dt class="meta">phone and wholesale</dt><dd><a href="tel:+905407326583">+90 540 732 65 83</a><br>Mon to Fri, 09:00 to 17:00</dd></div>
+          <div><dt class="meta">write to us</dt><dd><a href="mailto:info@recoltecoffee.com">info@recoltecoffee.com</a></dd></div>
+          <div class="is-wide-only"><dt class="meta">find us</dt><dd class="meta">41.0589° N<br>28.9813° E</dd></div>
+        </dl>
+      </div>
+      <footer class="foot">
+        <p class="foot__word" aria-hidden="true">Récolte</p>
+        <div class="foot__small meta">
+          <span>© 2026 Récolte Coffee Roastery</span>
+          <a href="https://www.recoltecoffee.com/toptansat%C4%B1%C5%9F">Wholesale</a>
+          <a href="https://www.recoltecoffee.com/sss">Questions</a>
+          <a href="https://www.recoltecoffee.com/gizlilikpolitikas%C4%B1">Privacy</a>
+        </div>
+      </footer>
+    </section>
+
+    <p class="world__code meta" aria-hidden="true"><span data-tc>00:00.0</span> / 00:25.0</p>
+  </div>
+</main>
+
+<dialog class="sheet sheet--bag" data-bag aria-labelledby="bag-h">
+  <div class="sheet__in">
+    <header class="sheet__head">
+      <h2 id="bag-h" class="sheet__title">Your bag</h2>
+      <button class="tool" type="button" data-close>Close</button>
+    </header>
+    <ul class="bag__list" data-bag-list></ul>
+    <p class="bag__empty body" data-bag-empty>Nothing here yet. Open a label in Origins and add a coffee.</p>
+    <div class="bag__foot">
+      <p class="bag__total"><span class="meta">total</span> <span data-bag-total>₺0</span></p>
+      <a class="btn btn--solid" href="https://www.recoltecoffee.com/category/kahveler">Continue in the shop</a>
+      <p class="meta">This bag is a preview. Checkout happens on recoltecoffee.com.</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet sheet--menu" data-menu aria-label="Menu">
+  <div class="sheet__in">
+    <header class="sheet__head">
+      <span class="bar__word">Récolte</span>
+      <button class="tool" type="button" data-close>Close</button>
+    </header>
+    <nav class="menu__nav" aria-label="Chapters">
+      <a href="#film">The walk-in</a>
+      <a href="#origins">Origins</a>
+      <a href="#ritual">Ritual</a>
+      <a href="#subscribe">Subscription</a>
+      <a href="#brew">Brew guide</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <div class="menu__tools">
+      <button class="tool tool--motion" type="button" data-motion data-on="Play the film" data-off="Reduce motion" aria-pressed="false">Play the film</button>
+      <a class="tool" href="index.html" hreflang="tr" lang="tr">Türkçe</a>
+      <button class="tool" type="button" data-sound aria-pressed="false"><span class="tool__led" aria-hidden="true"></span><span data-sound-label>Sound off</span></button>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="site.js" defer></script>
+</body>
+</html>

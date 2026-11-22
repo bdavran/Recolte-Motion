@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Récolte Coffee Roastery, Bomonti</title>
+<meta name="description" content="İstanbul'da kavrulan, Bomonti'deki kafemizde demlenen nitelikli kahve. Tek kökenler, ev harmanları, aylık abonelik ve demleme rehberleri.">
+<meta name="theme-color" content="#221b15">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 30V15a10 10 0 0 1 20 0v15z' fill='%23c78a59'/></svg>">
+<link rel="alternate" hreflang="en" href="en.html">
+<link rel="alternate" hreflang="tr" href="index.html">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,300i&f[]=switzer@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="public/img/poster.webp" media="(min-width: 861px)">
+<link rel="preload" as="image" href="public/img/poster-m.webp" media="(max-width: 860px)">
+<link rel="stylesheet" href="scrollcraft.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<a class="skip" href="#origins">Kahvelere geç</a>
+<div class="sc-grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span class="cursor__ring"></span><span class="cursor__dot"></span></div>
+
+<header class="bar" data-bar>
+  <a class="bar__mark" href="#film" aria-label="Récolte Coffee Roastery, kapıya dön">
+    <span class="bar__word">Récolte</span>
+    <span class="bar__sub">kahve kavurma evi</span>
+  </a>
+  <nav class="bar__nav" aria-label="Ana menü">
+    <a href="#origins">Kökenler</a>
+    <a href="#ritual">Ritüel</a>
+    <a href="#subscribe">Abonelik</a>
+    <a href="#brew">Demleme</a>
+    <a href="#visit">Ziyaret</a>
+  </nav>
+  <div class="bar__tools">
+    <button class="tool tool--motion" type="button" data-motion data-on="Filmi oynat" data-off="Hareketi azalt" aria-pressed="false">Filmi oynat</button>
+    <a class="tool tool--lang" href="en.html" hreflang="en" lang="en" aria-label="English">EN</a>
+    <button class="tool" type="button" data-sound aria-pressed="false"><span class="tool__led" aria-hidden="true"></span><span data-sound-label>Ses kapalı</span></button>
+    <button class="tool" type="button" data-bag-open aria-haspopup="dialog">Sepet <span class="tool__count" data-bag-count>0</span></button>
+    <button class="tool tool--menu" type="button" data-menu-open aria-haspopup="dialog">Menü</button>
+  </div>
+</header>
+
+<!-- Signature move: the scroll is a roast. Chapters are roast phases. -->
+<nav class="roast" aria-label="Bölümler, bir kavurma profili olarak" data-roast>
+  <p class="roast__read" aria-live="off">
+    <span class="roast__phase" data-roast-phase>Şarj</span>
+    <span class="roast__nums"><span data-roast-bt>200.0</span> °C <span class="roast__sep" aria-hidden="true">/</span> <span data-roast-time>00:00</span></span>
+  </p>
+  <div class="roast__plot">
+    <svg class="roast__svg" viewBox="0 0 240 84" preserveAspectRatio="none" aria-hidden="true">
+      <defs><clipPath id="roastClip"><rect data-roast-clip x="0" y="0" width="0" height="84"/></clipPath></defs>
+      <line class="roast__axis" x1="0" y1="83.5" x2="240" y2="83.5"/>
+      <path class="roast__ghost" data-roast-ghost d=""/>
+      <path class="roast__live" data-roast-live d="" clip-path="url(#roastClip)"/>
+      <circle class="roast__head" data-roast-head r="3" cx="0" cy="0"/>
+    </svg>
+    <ol class="roast__marks" data-roast-marks>
+      <li><a href="#film" data-mark="0" data-target="film"><span>Şarj<em>İçeri giriş</em></span></a></li>
+      <li><a href="#origins" data-mark="4.5" data-target="origins"><span>Sararma<em>Kökenler</em></span></a></li>
+      <li><a href="#ritual" data-mark="6.5" data-target="ritual"><span>Maillard<em>Ritüel</em></span></a></li>
+      <li><a href="#subscribe" data-mark="8.5" data-target="subscribe"><span>İlk çatlama<em>Abonelik</em></span></a></li>
+      <li><a href="#brew" data-mark="9.25" data-target="brew"><span>Gelişim<em>Demleme rehberi</em></span></a></li>
+      <li><a href="#visit" data-mark="10" data-target="visit"><span>Boşaltma<em>Ziyaret</em></span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- One world. Nothing below scrolls past as a block: the stage is pinned for
+     the whole track and every chapter arrives inside it. -->
+<main id="film" class="world" data-world>
+  <div class="world__pin t-dark">
+
+    <div class="world__light" aria-hidden="true"></div>
+    <div class="world__slot" aria-hidden="true" data-arch-slot></div>
+
+    <div class="world__window" data-arch>
+      <canvas class="world__gl" data-gl aria-hidden="true"></canvas>
+      <div class="world__stills" aria-hidden="true">
+        <picture><source media="(max-width: 860px)" srcset="public/img/poster-m.webp"><img data-at="0" src="public/img/poster.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s2-m.webp"><img data-at="3.4" src="public/img/s2.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s3-m.webp"><img data-at="11.8" src="public/img/s3.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s4-m.webp"><img data-at="17.6" src="public/img/s4.webp" alt="" width="1600" height="900"></picture>
+        <picture><source media="(max-width: 860px)" srcset="public/img/s5-m.webp"><img data-at="20.6" src="public/img/s5.webp" alt="" width="1600" height="900"></picture>
+      </div>
+      <div class="world__paper" aria-hidden="true"></div>
+      <div class="shade shade--lead" data-shade-layer="lead" aria-hidden="true"></div>
+      <div class="shade shade--trail" data-shade-layer="trail" aria-hidden="true"></div>
+      <div class="shade shade--band" data-shade-layer="band" aria-hidden="true"></div>
+      <div class="world__top" aria-hidden="true"></div>
+    </div>
+    <video class="world__video" data-film data-src="public/video/walk.mp4" data-src-mobile="public/video/walk-m.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+
+    <!-- the threshold, on linen -->
+    <div class="hero t-light" data-hero>
+      <p class="hero__where meta"><span>41,0589° K / 28,9813° D</span><span>Bomonti, İstanbul</span></p>
+      <h1 class="hero__title">Her fincan bir hasatla başlar.</h1>
+      <p class="hero__lede">Récolte, Fransızcada hasat demek. Tek kökenli kahveleri İstanbul'da kavuruyor, Bomonti'deki kafemizde demliyoruz.</p>
+      <div class="hero__actions">
+        <a class="btn btn--solid" href="#subscribe" data-magnetic>Aboneliği başlat</a>
+        <a class="btn btn--line" href="#origins">Kahveleri gör</a>
+      </div>
+    </div>
+
+    <!-- through the doors -->
+    <section class="ch" data-win="1.2 1.7 3.7 4.2" data-shade="lead" aria-label="Hasat">
+      <article class="scene scene--lead">
+        <p class="scene__tag meta">hasat</p>
+        <h2 class="scene__title">Récolte, hasat demek.</h2>
+        <p class="scene__body">Her paket birinin tarlasında başlar. Ruanda'da kadın üreticilerin yetiştirdiği Red Bourbon, Medellín tepelerinden Supremo. O toprağı fincanda tutmak için kavuruyoruz.</p>
+        <dl class="scene__data meta">
+          <div><dt>rakım</dt><dd>1.800 m</dd></div>
+          <div><dt>işlem</dt><dd>yıkanmış</dd></div>
+          <div><dt>fincan puanı</dt><dd>SCA 84,75</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <!-- along the bar -->
+    <section class="ch" data-win="4.4 4.9 7.0 7.5" data-shade="trail" aria-label="Kavurma">
+      <article class="scene scene--trail">
+        <p class="scene__tag meta">kavurma</p>
+        <h2 class="scene__title">Zamanın ve ateşin diyaloğu.</h2>
+        <p class="scene__body">Her kavrum, kökenine göre kurulur. Çiçeksi tonlar ya da derin, kadifemsi tatlılık öne çıkana dek zamanı, sesi ve kokuyu dinleriz.</p>
+        <dl class="scene__data meta">
+          <div><dt>ilk çatlama</dt><dd>≈ 196 °C</dd></div>
+          <div><dt>filtre</dt><dd>açıktan ortaya</dd></div>
+          <div><dt>espresso</dt><dd>orta</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <!-- origins: the bar goes soft and the labels come forward -->
+    <section id="origins" class="ch ch--origins" data-win="7.5 8.3 11.9 12.6" data-rail-range="8.3 11.9" aria-labelledby="origins-h">
+      <div class="rail" data-rail>
+        <div class="rail__lead">
+          <h2 id="origins-h" class="h-chapter">Dört kahve, dört toprak.</h2>
+          <p class="body">Bu sezonun kavrumlarından iki tek köken ve iki ev harmanı. Tadına bakmak için bir etiketi açın.</p>
+          <p class="meta">250 g paket, siparişe göre kavrulur</p>
+        </div>
+
+        <article class="bean" data-bean="rwanda">
+          <header>
+            <p class="bean__kind meta">tek köken <span class="bean__flag">sınırlı</span></p>
+            <h3 class="bean__name">Rwanda Red&nbsp;Bourbon</h3>
+            <p class="bean__where meta">1,94° G / 29,87° D<br>Ruanda, 1.800 m rakım</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tadım notaları"><li>Mandalina</li><li>Kivi</li><li>Yeşil çay</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>gövde</dt><dd><span class="pips" style="--v:3" role="img" aria-label="5 üzerinden 3"></span></dd></div>
+            <div><dt>asidite</dt><dd><span class="pips" style="--v:4" role="img" aria-label="5 üzerinden 4"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-rwanda">Tadım notları</button>
+          <div class="bean__cup" id="cup-rwanda" hidden>
+            <p>Kadın üreticilerin emeğiyle 1.800 metrede yetişir. Canlı asidite ve orta-yüksek gövde üzerinde mandalina, kivi ve yeşil çay. Yıkanmış işlem sayesinde fincan berrak ve dengeli kalır.</p>
+            <p class="meta">yıkanmış / organik / SCA 84,75<br>en iyisi V60, Chemex</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta"><s>₺790</s> ₺632</p>
+            <button class="bean__add" type="button" data-add='{"id":"rwanda","name":"Rwanda Red Bourbon","price":632}'>Sepete ekle</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="colombia">
+          <header>
+            <p class="bean__kind meta">tek köken</p>
+            <h3 class="bean__name">Colombia Supremo Medellín</h3>
+            <p class="bean__where meta">6,24° K / 75,58° B<br>Antioquia, Supremo sınıfı</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tadım notaları"><li>Yeşil elma</li><li>Esmer şeker</li><li>Kakao</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>gövde</dt><dd><span class="pips" style="--v:2" role="img" aria-label="5 üzerinden 2"></span></dd></div>
+            <div><dt>asidite</dt><dd><span class="pips" style="--v:4" role="img" aria-label="5 üzerinden 4"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-colombia">Tadım notları</button>
+          <div class="bean__cup" id="cup-colombia" hidden>
+            <p>Medellín bölgesinin Supremo çekirdekleri. Yüksek asidite ve ferah aromatik yapı: yeşil elmanın canlılığı, esmer şeker ve kakaoyla dengelenir.</p>
+            <p class="meta">supremo, elek 17 ve üzeri<br>en iyisi V60, Kalita, Aeropress</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺655</p>
+            <button class="bean__add" type="button" data-add='{"id":"colombia","name":"Colombia Supremo Medellín","price":655}'>Sepete ekle</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="fleur">
+          <header>
+            <p class="bean__kind meta">ev harmanı</p>
+            <h3 class="bean__name">Fleur South&nbsp;America</h3>
+            <p class="bean__where meta">birkaç çiftlik<br>Güney Amerika</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tadım notaları"><li>Kiraz</li><li>Karamel</li><li>Kakao</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>gövde</dt><dd><span class="pips" style="--v:4" role="img" aria-label="5 üzerinden 4"></span></dd></div>
+            <div><dt>asidite</dt><dd><span class="pips" style="--v:2" role="img" aria-label="5 üzerinden 2"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-fleur">Tadım notları</button>
+          <div class="bean__cup" id="cup-fleur" hidden>
+            <p>Canlı kiraz, yumuşak karamel ve kakao izleri. Sade içimde berrak ve çiçeksi, sütlü içimde katmanlı ve ipeksi.</p>
+            <p class="meta">harman<br>en iyisi espresso, flat white, filtre</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺610</p>
+            <button class="bean__add" type="button" data-add='{"id":"fleur","name":"Fleur South America","price":610}'>Sepete ekle</button>
+          </footer>
+        </article>
+
+        <article class="bean" data-bean="ember">
+          <header>
+            <p class="bean__kind meta">ev harmanı</p>
+            <h3 class="bean__name">Ember Africa Pasific</h3>
+            <p class="bean__where meta">birkaç çiftlik<br>Afrika ve Pasifik</p>
+          </header>
+          <ul class="bean__notes" aria-label="Tadım notaları"><li>Tütün</li><li>Kuruyemiş</li><li>Kakao</li></ul>
+          <dl class="bean__scale meta">
+            <div><dt>gövde</dt><dd><span class="pips" style="--v:4" role="img" aria-label="5 üzerinden 4"></span></dd></div>
+            <div><dt>asidite</dt><dd><span class="pips" style="--v:1" role="img" aria-label="5 üzerinden 1"></span></dd></div>
+          </dl>
+          <button class="bean__open" type="button" aria-expanded="false" aria-controls="cup-ember">Tadım notları</button>
+          <div class="bean__cup" id="cup-ember" hidden>
+            <p>Yoğun gövde, düşük asidite. Kakao ve kuruyemişin topraksı sıcaklığı, iz bırakan bir tütün dokusuyla; klasik espresso geleneği için.</p>
+            <p class="meta">harman<br>en iyisi espresso, moka pot</p>
+          </div>
+          <footer class="bean__foot">
+            <p class="bean__price meta">₺515</p>
+            <button class="bean__add" type="button" data-add='{"id":"ember","name":"Ember Africa Pasific","price":515}'>Sepete ekle</button>
+          </footer>
+        </article>
+
+        <div class="rail__note">
+          <p class="body">Her kahve kavurma evinden taze çıkar. 1.000 ₺ ve üzeri siparişlerde kargo ücretsiz.</p>
+          <a class="link" href="https://www.recoltecoffee.com/category/kahveler">Mağazadaki tüm kahveler</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ritual: three statements while the room opens up -->
+    <section id="ritual" class="ch ch--line" data-win="13.1 13.5 14.6 15.0" data-shade="lead" aria-label="Kavurma evi ve kafe ritüeli">
+      <h2 class="h-chapter">Kavurma, zamanın ve ateşin diyaloğudur.</h2>
+    </section>
+    <section class="ch ch--line" data-win="14.9 15.3 16.4 16.8" data-shade="lead">
+      <p class="lede">Her çekirdek olgunlaştığı toprağın ve iklimin izini taşır. Kavurma, bu geçmişi örtmeden açığa çıkarmanın yoludur.</p>
+    </section>
+    <section class="ch ch--line" data-win="16.7 17.1 18.0 18.35" data-shade="lead">
+      <div class="ritual__last">
+        <p class="lede">Üreticinin emeğine sadık kalırız. Hasat, kavurma ve elinizdeki fincan tek bir hikâyedir; size ulaşan, onun en taze bölümü.</p>
+        <p class="meta ritual__credit">hasadımızın bir de resmi var: <i>The Silent Hands</i>, Melek Demirci for Récolte</p>
+        <a class="link" href="https://www.recoltecoffee.com/hikayemiz">Hikâyemizi okuyun</a>
+      </div>
+    </section>
+
+    <!-- subscription: the room dissolves into linen paper -->
+    <section id="subscribe" class="ch ch--club t-light" data-win="18.6 19.0 21.6 22.0" aria-labelledby="club-h">
+      <div class="club__grid">
+        <div class="club__intro">
+          <h2 id="club-h" class="h-chapter">Hasat, kapınıza.</h2>
+          <p class="body">Kapınıza ne geleceğini her ay kavurmacılarımız seçer. Bazı lotlar yalnızca aboneler için temin edilir, bazıları ise resmi lansmanından önce gelir.</p>
+          <ul class="club__perks">
+            <li>Mikro lotlar ve özel kavrumlar, önce sizde</li>
+            <li>Diğer her şeyde abonelere özel fiyat</li>
+            <li>Dilediğiniz an durdurun ya da iptal edin</li>
+            <li>Kargo her zaman ücretsiz</li>
+          </ul>
+        </div>
+        <form class="club__form" data-club onsubmit="return false" aria-describedby="club-sum">
+          <fieldset>
+            <legend>Nasıl demliyorsunuz?</legend>
+            <div class="seg">
+              <label><input type="radio" name="method" value="filter" checked><span>Filtre</span></label>
+              <label><input type="radio" name="method" value="espresso"><span>Espresso</span></label>
+              <label><input type="radio" name="method" value="both"><span>Biraz ikisi de</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Teslimat başına paket <span class="meta">her biri 250 g</span></legend>
+            <div class="seg">
+              <label><input type="radio" name="bags" value="1"><span>1</span></label>
+              <label><input type="radio" name="bags" value="2" checked><span>2</span></label>
+              <label><input type="radio" name="bags" value="3"><span>3</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Ne sıklıkla</legend>
+            <div class="seg">
+              <label><input type="radio" name="every" value="2"><span>İki haftada bir</span></label>
+              <label><input type="radio" name="every" value="4" checked><span>Ayda bir</span></label>
+            </div>
+          </fieldset>
+          <div class="club__row">
+            <label class="field">
+              <span class="field__label">Öğütme</span>
+              <select name="grind">
+                <option value="whole">Çekirdek</option>
+                <option value="v60" selected>V60 için öğütülmüş</option>
+                <option value="chemex">Chemex için öğütülmüş</option>
+                <option value="espresso">Espresso için öğütülmüş</option>
+                <option value="press">French press için öğütülmüş</option>
+              </select>
+            </label>
+            <label class="check"><input type="checkbox" name="surprise" checked><span>Sürpriz harmanı ekle</span></label>
+          </div>
+          <output class="club__sum" id="club-sum" aria-live="polite">
+            <span class="club__sentence" data-club-sentence>Ayda bir, V60 için öğütülmüş iki paket filtre kavrum, sürpriz harman da dahil.</span>
+            <span class="meta" data-club-math>Her teslimatta 500 g, 15 g ile yaklaşık 33 fincan. Ayda 500 g.</span>
+          </output>
+          <div class="club__foot">
+            <a class="btn btn--solid" href="https://www.recoltecoffee.com/kahveaboneli%C4%9Fi" data-magnetic>Aboneliği başlat</a>
+            <p class="meta">Kaydı recoltecoffee.com'da tamamlarsınız.<br>Burada ödeme alınmaz.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- brew: the paper gives way to the espresso machine -->
+    <section id="brew" class="ch ch--brew" data-win="22.6 23.1 25.6 26.1" data-brew-range="23.1 25.5" aria-labelledby="brew-h">
+      <div class="brew__head">
+        <h2 id="brew-h" class="h-chapter">Barda nasılsa öyle demleyin.</h2>
+        <div class="brew__tabs" role="tablist" aria-label="Demleme yöntemi">
+          <button role="tab" type="button" aria-selected="true" data-method="v60">V60</button>
+          <button role="tab" type="button" aria-selected="false" data-method="chemex" tabindex="-1">Chemex</button>
+          <button role="tab" type="button" aria-selected="false" data-method="espresso" tabindex="-1">Espresso</button>
+        </div>
+        <p class="body brew__how">Kaydırdıkça tarif elinizle ilerler. Ya da başlatın ve gerçek zamanlı birlikte demleyin.</p>
+        <p class="brew__pair meta" data-brew-pair></p>
+      </div>
+      <div class="brew__scale" role="tabpanel" aria-label="Tarif">
+        <div class="brew__readout">
+          <p class="brew__grams"><span data-brew-grams>0</span><span class="brew__unit">g</span></p>
+          <p class="brew__clock meta"><span data-brew-clock>0:00</span> <span data-brew-target>/ 3:00</span></p>
+          <div class="brew__track" aria-hidden="true"><span data-brew-fill></span></div>
+          <button class="btn btn--line brew__play" type="button" data-brew-play aria-pressed="false">Birlikte demle</button>
+        </div>
+        <dl class="brew__recipe meta" data-brew-recipe></dl>
+        <ol class="brew__steps" data-brew-steps></ol>
+      </div>
+      <aside class="brew__workshop">
+        <p class="lede">Barda öğrenin.</p>
+        <p class="body">Kafeler için barista eğitimleri ve Bomonti'de küçük gruplarla ev demlemesi atölyeleri.</p>
+        <a class="link" href="mailto:info@recoltecoffee.com?subject=At%C3%B6lye">Bir sonraki atölyeyi sorun</a>
+      </aside>
+    </section>
+
+    <!-- visit: the walk ends in the armchairs, and the page stops -->
+    <section id="visit" class="ch ch--visit" data-win="26.6 27.4 999 1000" data-shade="lead band" aria-labelledby="visit-h">
+      <div class="visit__grid">
+        <div class="visit__lead">
+          <h2 id="visit-h" class="h-chapter">İkinci fincan için kalın.</h2>
+          <p class="lede">Yeşil deri, taş bir bar ve sakin bir köşe. Amiral kafemiz Bomonti Modern Palas'ın içinde.</p>
+          <a class="btn btn--solid" href="https://www.google.com/maps/search/?api=1&amp;query=R%C3%A9colte%20Coffee%20Bomonti%20Modern%20Palas%20%C5%9Ei%C5%9Fli" data-magnetic>Yol tarifi al</a>
+        </div>
+        <dl class="visit__facts">
+          <div><dt class="meta">adres</dt><dd>Cumhuriyet Mah. Nehir Sk., Bomonti Modern Palas<br>No: 6, İç Kapı No: 79, Şişli, İstanbul</dd></div>
+          <!-- YER TUTUCU: kafe saatleri recoltecoffee.com'da yayınlanmıyor. Yayından önce değiştirin. -->
+          <div><dt class="meta">kafe</dt><dd>Her gün, 08:00-20:00</dd></div>
+          <div><dt class="meta">telefon ve toptan satış</dt><dd><a href="tel:+905407326583">+90 540 732 65 83</a><br>Pazartesi-Cuma, 09:00-17:00</dd></div>
+          <div><dt class="meta">bize yazın</dt><dd><a href="mailto:info@recoltecoffee.com">info@recoltecoffee.com</a></dd></div>
+          <div class="is-wide-only"><dt class="meta">konum</dt><dd class="meta">41,0589° K<br>28,9813° D</dd></div>
+        </dl>
+      </div>
+      <footer class="foot">
+        <p class="foot__word" aria-hidden="true">Récolte</p>
+        <div class="foot__small meta">
+          <span>© 2026 Récolte Coffee Roastery</span>
+          <a href="https://www.recoltecoffee.com/toptansat%C4%B1%C5%9F">Toptan satış</a>
+          <a href="https://www.recoltecoffee.com/sss">Sık sorulanlar</a>
+          <a href="https://www.recoltecoffee.com/gizlilikpolitikas%C4%B1">Gizlilik</a>
+        </div>
+      </footer>
+    </section>
+
+    <p class="world__code meta" aria-hidden="true"><span data-tc>00:00.0</span> / 00:25.0</p>
+  </div>
+</main>
+
+<dialog class="sheet sheet--bag" data-bag aria-labelledby="bag-h">
+  <div class="sheet__in">
+    <header class="sheet__head">
+      <h2 id="bag-h" class="sheet__title">Sepetiniz</h2>
+      <button class="tool" type="button" data-close>Kapat</button>
+    </header>
+    <ul class="bag__list" data-bag-list></ul>
+    <p class="bag__empty body" data-bag-empty>Henüz bir şey yok. Kökenler bölümünde bir etiket açın ve kahve ekleyin.</p>
+    <div class="bag__foot">
+      <p class="bag__total"><span class="meta">toplam</span> <span data-bag-total>₺0</span></p>
+      <a class="btn btn--solid" href="https://www.recoltecoffee.com/category/kahveler">Mağazada devam et</a>
+      <p class="meta">Bu sepet bir önizlemedir. Ödeme recoltecoffee.com'da yapılır.</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet sheet--menu" data-menu aria-label="Menü">
+  <div class="sheet__in">
+    <header class="sheet__head">
+      <span class="bar__word">Récolte</span>
+      <button class="tool" type="button" data-close>Kapat</button>
+    </header>
+    <nav class="menu__nav" aria-label="Bölümler">
+      <a href="#film">İçeri giriş</a>
+      <a href="#origins">Kökenler</a>
+      <a href="#ritual">Ritüel</a>
+      <a href="#subscribe">Abonelik</a>
+      <a href="#brew">Demleme rehberi</a>
+      <a href="#visit">Ziyaret</a>
+    </nav>
+    <div class="menu__tools">
+      <button class="tool tool--motion" type="button" data-motion data-on="Filmi oynat" data-off="Hareketi azalt" aria-pressed="false">Filmi oynat</button>
+      <a class="tool" href="en.html" hreflang="en" lang="en">English</a>
+      <button class="tool" type="button" data-sound aria-pressed="false"><span class="tool__led" aria-hidden="true"></span><span data-sound-label>Ses kapalı</span></button>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="site.js" defer></script>
+</body>
+</html>
