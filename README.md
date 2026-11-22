@@ -27,7 +27,7 @@ Ardından `http://localhost:4500` adresini açın.
 | `site.js` | WebGL video çizimi, kaydırma izi, bölüm pencereleri, kavurma eğrisi, demleme zamanlayıcısı, abonelik hesaplayıcısı, sepet önizlemesi, ortam sesi |
 | `site.css` | Tasarım dili: renkler videodan ölçüldü (Zodiak, Switzer, Geist Mono) |
 | `scrollcraft.css` | Temel tokenlar ve tarayıcı yüzeyleri |
-| `public/video/` | Kaydırma için kodlanmış video. Masaüstü 1080p, 8 karede bir keyframe; mobil 3:4 kırpılmış, 4 karede bir keyframe |
+| `public/video/` | Kaydırma için kodlanmış video. Masaüstü 1080p, hareket kestirimiyle 60 fps, 8 karede bir keyframe; mobil 3:4 kırpılmış, 4 karede bir keyframe |
 | `public/img/` | Video yüklenene kadar ve WebGL olmadığında gösterilen sahne kareleri |
 | `docs/` | Tasarım özeti (BRIEF) ve Pear analizinden çıkan design DNA |
 

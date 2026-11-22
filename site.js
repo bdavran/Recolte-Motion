@@ -248,8 +248,11 @@
 
   function loadFilm() {
     if (reduce || !gl || !video) { showPoster(); return; }
-    var src = (small || coarse) ? video.getAttribute('data-src-mobile') : video.getAttribute('data-src');
-    fetch(src).then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); }).then(function (blob) {
+    var mobileClip = matchMedia('(pointer: coarse), (max-width: 860px) and (hover: none)').matches;
+    var src = video.getAttribute(mobileClip ? 'data-src-mobile' : 'data-src');
+    film.fps = mobileClip ? 24 : 60;
+    var download = window.tourClipURL === src ? window.tourClipDownload : null;
+    (download || fetch(src).then(function (r) { return r.ok ? r.blob() : null; })).then(function (blob) {
       video.addEventListener('error', showPoster, { once: true });
       video.addEventListener('loadedmetadata', function () {
         film.ready = true;
@@ -258,7 +261,7 @@
       }, { once: true });
       video.addEventListener('seeked', function () { film.painted = true; dirty = true; film.lastUp = -1; });
       video.muted = true; video.playsInline = true; video.preload = 'auto';
-      video.src = URL.createObjectURL(blob);
+      video.src = blob ? URL.createObjectURL(blob) : src;
     }).catch(showPoster);
   }
   // iOS keeps a seeked-but-never-played video blank; one muted play primes the decoder
@@ -279,7 +282,7 @@
   function filmFrame(v) {
     // playhead: scroll writes a target, the frame loop walks toward it
     film.target = filmTime(v);
-    film.cur = reduce ? film.target : lerp(film.cur, film.target, 0.14);
+    film.cur = (reduce || pendingStop) ? film.target : lerp(film.cur, film.target, 0.14);
     if (Math.abs(film.cur - film.target) < 0.0005) film.cur = film.target;
     // Once the clip has painted it owns the texture for good. During a seek the decoder
     // drops to HAVE_METADATA for a moment; falling back to a still there flashed a frame
@@ -304,12 +307,12 @@
     }
     // Present the completed seek before starting another one. Setting currentTime
     // immediately makes the decoder unavailable for the next texture upload.
-    // Both encodes are 24 fps. Seek to a frame centre so rounding in the
+    // Seek to a frame centre so rounding in the
     // media clock cannot land just before the intended frame boundary.
     if (film.ready && !video.seeking) {
-      var frameIndex = Math.min(Math.floor(film.cur * 24), Math.ceil(DUR * 24) - 1);
-      var seekTime = Math.min((frameIndex + 0.5) / 24, video.duration - 0.001);
-      if (Math.floor(video.currentTime * 24) !== frameIndex) {
+      var frameIndex = Math.min(Math.floor(film.cur * film.fps), Math.round(video.duration * film.fps) - 1);
+      var seekTime = Math.min((frameIndex + 0.5) / film.fps, video.duration - 0.001);
+      if (Math.floor(video.currentTime * film.fps) !== frameIndex) {
         try { video.currentTime = seekTime; } catch (e) {}
       }
     }
@@ -610,7 +613,13 @@
     if (!pendingStop) return;
     var move = pendingStop;
     var progress = move.immediate ? 1 : clamp01((now - move.start) / move.duration);
-    var y = lerp(move.from, worldTop + move.v * VH, smooth(progress));
+    // Keep most of the travel at a steady speed, with short acceleration
+    // and deceleration ramps so a short film segment does not hang at its ends.
+    var ramp = 0.16, distance;
+    if (progress < ramp) distance = progress * progress / (2 * ramp);
+    else if (progress > 1 - ramp) distance = 1 - ramp - (1 - progress) * (1 - progress) / (2 * ramp);
+    else distance = progress - ramp / 2;
+    var y = lerp(move.from, worldTop + move.v * VH, distance / (1 - ramp));
     scrollTo({ top: Math.round(y), behavior: 'instant' });
     if (progress === 1) {
       pendingStop = null;

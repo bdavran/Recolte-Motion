@@ -12,13 +12,11 @@
 <script>
 try {
   if (localStorage.getItem('recolte-motion') !== 'reduced') {
-    var clip = document.createElement('link');
-    clip.rel = 'preload';
-    clip.as = 'fetch';
-    clip.crossOrigin = 'anonymous';
-    clip.href = matchMedia('(max-width: 860px), (pointer: coarse)').matches
-      ? 'public/video/walk-m.mp4' : 'public/video/walk.mp4';
-    document.head.appendChild(clip);
+    var tourClipURL = matchMedia('(pointer: coarse), (max-width: 860px) and (hover: none)').matches
+      ? 'public/video/walk-m.mp4' : 'public/video/walk.mp4?v=film60';
+    var tourClipDownload = fetch(tourClipURL).then(function (response) {
+      return response.ok ? response.blob() : null;
+    }).catch(function () { return null; });
   }
 } catch (_) {}
 </script>
@@ -119,7 +117,7 @@ try {
       <div class="shade shade--band" data-shade-layer="band" aria-hidden="true"></div>
       <div class="world__top" aria-hidden="true"></div>
     </div>
-    <video class="world__video" data-film data-src="public/video/walk.mp4" data-src-mobile="public/video/walk-m.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <video class="world__video" data-film data-src="public/video/walk.mp4?v=film60" data-src-mobile="public/video/walk-m.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
 
     <!-- the threshold, on linen -->
     <div class="hero t-light" data-hero>
@@ -440,6 +438,6 @@ try {
   </div>
 </dialog>
 
-<script src="site.js" defer></script>
+<script src="site.js?v=film60" defer></script>
 </body>
 </html>
