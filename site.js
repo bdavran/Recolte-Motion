@@ -111,6 +111,8 @@
   var GO = { film: 0 };
   chapters.forEach(function (c) { if (c.el.id) GO[c.el.id] = c.b + 0.05; });
 
+  GO.visit = END;
+
   function measure() {
     var w = innerWidth, h = innerHeight;
     // a phone's toolbar resizes the viewport; only a real resize re-rulers the track
@@ -119,7 +121,6 @@
     worldTop = world.getBoundingClientRect().top + scrollY;
     var s = slot.getBoundingClientRect(), st = pin.getBoundingClientRect();
     slotBox = { t: s.top - st.top, l: s.left - st.left, r: st.right - s.right, b: st.bottom - s.bottom, w: s.width };
-    railOverflow = rail ? Math.max(0, rail.scrollWidth - pin.clientWidth) : 0;
     layoutDirty = true;
     if (gl) sizeCanvas();
   }
@@ -333,7 +334,7 @@
       var out = c.d > c.c ? smooth((v - c.c) / (c.d - c.c)) : (v >= c.c ? 1 : 0);
       var o = inn * (1 - out);
       c.shade.forEach(function (n) { sh[n] = Math.max(sh[n] || 0, o); });
-      if (Math.abs(o - c.o) < 0.002) return;
+      if (o === c.o || (o > 0 && o < 1 && Math.abs(o - c.o) < 0.002)) return;
       c.o = o;
       c.el.style.opacity = o.toFixed(3);
       if (!reduce && !calm) {
@@ -351,20 +352,6 @@
   }
 
   /* ---------------------------------------------------------------------
-     4. Origins: the rail travels while the bar blurs behind it
-     --------------------------------------------------------------------- */
-  var rail = $('[data-rail]');
-  var railWin = rail ? $('#origins') : null;
-  var railRange = railWin ? railWin.getAttribute('data-rail-range').split(/\s+/).map(parseFloat) : [0, 1];
-  var railX = -1, railOverflow = 0;
-  function railFrame(v) {
-    if (!rail) return;
-    var p = smooth((v - railRange[0]) / (railRange[1] - railRange[0]));
-    var x = Math.round(-railOverflow * p * 10) / 10;
-    if (x !== railX) { railX = x; rail.style.transform = 'translate3d(' + x + 'px,0,0)'; }
-  }
-
-  /* ---------------------------------------------------------------------
      5. Signature move: the roast instrument
      --------------------------------------------------------------------- */
   var roast = $('[data-roast]');
@@ -378,8 +365,8 @@
   var rEls = roast && { bt: $('[data-roast-bt]', roast), time: $('[data-roast-time]', roast), phase: $('[data-roast-phase]', roast), clip: $('[data-roast-clip]', roast), head: $('[data-roast-head]', roast) };
   var lastRoast = { bt: '', time: '', phase: '', now: -1 };
   var anchors = marks.map(function (a) {
-    var id = a.getAttribute('data-target'), el = document.getElementById(id);
-    return { m: parseFloat(a.getAttribute('data-mark')), v: id === 'film' ? 0 : (el ? parseFloat(el.getAttribute('data-win').split(/\s+/)[0]) : 0), id: id };
+    var id = a.getAttribute('data-target');
+    return { m: parseFloat(a.getAttribute('data-mark')), v: GO[id], id: id };
   });
   if (roast) {
     var d = '';
@@ -395,6 +382,8 @@
   }
   function roastFrame(v) {
     if (!roast) return;
+    // Positions are rounded to CSS pixels when scrolling.
+    v += 0.5 / VH;
     var m = 0, now = 0, last = anchors.length - 1;
     if (v >= anchors[last].v) { m = anchors[last].m; now = last; }
     else {
@@ -589,22 +578,67 @@
   });
   renderBag();
 
-  var lenis = null;
-  function openSheet(dlg) { if (!dlg || dlg.open) return; dlg.showModal(); if (lenis) lenis.stop(); }
+  var pendingStop = null;
+  function openSheet(dlg) { if (!dlg || dlg.open) return; dlg.showModal(); }
   [bagDlg, menuDlg].forEach(function (dlg) {
     if (!dlg) return;
-    dlg.addEventListener('close', function () { if (lenis) lenis.start(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
     $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
   });
   $('[data-bag-open]').addEventListener('click', function () { openSheet(bagDlg); });
   $('[data-menu-open]').addEventListener('click', function () { openSheet(menuDlg); });
 
+  function moveToStop(v) {
+    pendingStop = v;
+    scrollTo({ top: Math.round(worldTop + v * VH), behavior: reduce ? 'instant' : 'smooth' });
+  }
+
+  function stepStop(direction) {
+    var here = pendingStop === null ? (scrollY - worldTop) / VH : pendingStop;
+    var next = direction > 0
+      ? anchors.find(function (a) { return a.v > here + 2 / VH; })
+      : anchors.slice().reverse().find(function (a) { return a.v < here - 2 / VH; });
+    if (next) moveToStop(next.v);
+  }
+
+  function gestureAllowed(e) {
+    return !bagDlg.open && !menuDlg.open && !e.target.closest?.('select, textarea, [contenteditable="true"]');
+  }
+
+  // A trackpad sends a tail of wheel events after the fingers lift.
+  var wheelEnd, wheelTaken = false, wheelDelta = 0;
+  addEventListener('wheel', function (e) {
+    if (e.ctrlKey || e.shiftKey || !gestureAllowed(e) || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
+    e.preventDefault();
+    clearTimeout(wheelEnd);
+    wheelEnd = setTimeout(function () { wheelTaken = false; wheelDelta = 0; }, 170);
+    if (wheelTaken) return;
+    wheelDelta += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? VH : 1);
+    if (Math.abs(wheelDelta) >= 4) {
+      wheelTaken = true;
+      stepStop(Math.sign(wheelDelta));
+    }
+  }, { passive: false });
+
+  var swipe = null;
+  addEventListener('touchstart', function (e) {
+    swipe = e.touches.length === 1 && gestureAllowed(e) ? e.touches[0] : null;
+  }, { passive: true });
+  addEventListener('touchcancel', function () { swipe = null; }, { passive: true });
+  addEventListener('touchend', function (e) {
+    if (!swipe || e.touches.length || !gestureAllowed(e)) return;
+    var dx = swipe.clientX - e.changedTouches[0].clientX;
+    var dy = swipe.clientY - e.changedTouches[0].clientY;
+    swipe = null;
+    if (Math.abs(dy) >= 28 && Math.abs(dy) > Math.abs(dx)) stepStop(Math.sign(dy));
+  }, { passive: true });
+
+  // Native keyboard and scrollbar navigation can interrupt a smooth jump.
+  addEventListener('keydown', function () { pendingStop = null; });
+  addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') pendingStop = null; });
   function goTo(id) {
     if (!(id in GO)) return false;
-    var y = worldTop + GO[id] * VH;
-    if (lenis) lenis.scrollTo(y, { duration: 2.2, easing: function (x) { return 1 - Math.pow(1 - x, 4); } });
-    else scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+    moveToStop(GO[id]);
     var target = document.getElementById(id);
     if (target && id !== 'film') {
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
@@ -752,16 +786,15 @@
      11. Mount and the one loop
      --------------------------------------------------------------------- */
   if (!initGL()) root.classList.add('no-gl');
-  if (fine && window.Lenis) { lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.85 }); root.classList.add('lenis'); }
   measure();
   loadFilm();
 
   var grain = $('.sc-grain'), lastY = -1, vel = 0, lastVelText = '', lastBar = '', lastTc = '', time0 = performance.now();
   var lastV = -1, arch;
   function frame(now) {
-    if (lenis) lenis.raf(now);
     var y = scrollY;
     var v = Math.max(0, (y - worldTop) / VH);
+    if (pendingStop !== null && Math.abs(v - pendingStop) * VH < 2) pendingStop = null;
     var sceneChanged = layoutDirty || v !== lastV;
     if (sceneChanged) arch = archFrame(v);
     var t = filmFrame(v);
@@ -780,7 +813,6 @@
     }
     if (sceneChanged) {
       chapterFrame(v);
-      railFrame(v);
       roastFrame(v);
       lastV = v;
       layoutDirty = false;

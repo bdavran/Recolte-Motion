@@ -52,9 +52,6 @@
   color: var(--sc-ink);
 }
 body { background: var(--graphite); }
-html.lenis, html.lenis body { height: auto; }
-html.lenis { scroll-behavior: auto; }
-.lenis.lenis-stopped { overflow: hidden; }
 
 /* --- type -------------------------------------------------------------- */
 .meta {
@@ -274,7 +271,7 @@ html[data-bar="dark"] .world__top { opacity: 1; }
 
 /* origins: labels slide across a blurred bar */
 .ch--origins { display: flex; align-items: center; padding: calc(var(--bar-h) + 1vh) 0 8.5rem; box-sizing: border-box; }
-.rail { display: flex; gap: clamp(1rem, 2vw, 2rem); padding-inline: var(--sc-gutter); align-items: stretch; height: 100%; will-change: transform; }
+.rail { display: flex; gap: clamp(1rem, 2vw, 2rem); padding-inline: var(--sc-gutter); align-items: stretch; height: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
 .rail__lead { flex: 0 0 min(30rem, 82vw); display: flex; flex-direction: column; justify-content: center; gap: 1.4rem; padding-right: clamp(1rem, 4vw, 4rem); }
 .rail__lead .meta { color: #d8c9bb; }
 .rail__note { flex: 0 0 min(22rem, 78vw); display: flex; flex-direction: column; justify-content: flex-end; gap: 1rem; padding: 0 0 2rem clamp(1rem, 3vw, 3rem); }
@@ -534,3 +531,7 @@ html.is-reduced .bean__notes li { transition: none; }
 .tool--motion { display: none; }
 html.sys-reduce .tool--motion { display: inline-flex; }
 @media (max-width: 860px) { .bar .tool--motion { display: none !important; } }
+
+/* Vertical swipes step through the film. Cards and pinch zoom stay native. */
+.world__pin, .rail, .bar, .roast { touch-action: pan-x pinch-zoom; }
+html:has(.sheet[open]) { overflow: hidden; }
