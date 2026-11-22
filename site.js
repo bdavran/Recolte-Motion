@@ -28,10 +28,10 @@
   var sysReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var motionPref = null;
   try { motionPref = localStorage.getItem('recolte-motion'); } catch (e) {}
-  // The film plays by default: it only moves when the visitor scrolls. A system that asks
-  // for reduced motion still gets it, without inertia, cursor or text blur ('calm').
+  // The film and the full flow play by default (the film only moves when the visitor
+  // scrolls). The 'Reduce motion' toggle turns them off and is remembered.
   var reduce = motionPref === 'reduced';
-  var calm = sysReduce && motionPref !== 'full';
+  var calm = false;   // the full flow (inertia, cursor, text blur) for everyone; the toggle turns motion off
   root.classList.toggle('is-reduced', reduce || calm);
   root.classList.toggle('sys-reduce', sysReduce);
   var fine = matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce && !calm;
@@ -102,7 +102,7 @@
 
   var chapters = $$('[data-win]').map(function (el) {
     var w = el.getAttribute('data-win').split(/\s+/).map(parseFloat);
-    return { el: el, a: w[0], b: w[1], c: w[2], d: w[3], shade: (el.getAttribute('data-shade') || '').split(/\s+/).filter(Boolean), o: -1, hot: null };
+    return { el: el, a: w[0], b: w[1], c: w[2], d: w[3], shade: (el.getAttribute('data-shade') || '').split(/\s+/).filter(Boolean), o: -1, hot: null, big: el.matches('.ch--origins, .ch--club, .ch--brew, .ch--visit') };
   });
   var shades = {};
   $$('[data-shade-layer]').forEach(function (el) { shades[el.getAttribute('data-shade-layer')] = el; });
@@ -268,10 +268,12 @@
       try { video.currentTime = film.cur; } catch (e) {}
     }
 
-    var useVideo = film.ready && film.painted && video.readyState >= 2;
+    // Once the clip has painted it owns the texture for good. During a seek the decoder
+    // drops to HAVE_METADATA for a moment; falling back to a still there flashed a frame
+    // from a different second at every scene boundary. Hold the last real frame instead.
     if (gl) {
-      if (useVideo) {
-        if (!video.seeking && video.currentTime !== film.lastUp) {
+      if (film.painted) {
+        if (video.readyState >= 2 && !video.seeking && video.currentTime !== film.lastUp) {
           if (upload(video, video.videoWidth, video.videoHeight)) film.lastUp = video.currentTime;
         }
       } else {
@@ -325,10 +327,11 @@
       c.o = o;
       c.el.style.opacity = o.toFixed(3);
       if (!reduce && !calm) {
+        // big interactive panels fade without a filter; only text chapters resolve from blur
         // copy travels at most 2vh either side: a layer over a moving world, never a second page
         var y = out > 0 ? -out * 0.02 * VH : (1 - inn) * 0.02 * VH;
         c.el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
-        c.el.style.filter = o > 0.995 ? 'none' : 'blur(' + ((1 - o) * 10).toFixed(2) + 'px)';
+        if (!c.big) c.el.style.filter = o > 0.995 ? 'none' : 'blur(' + ((1 - o) * 10).toFixed(2) + 'px)';
       }
       c.el.classList.toggle('is-live', o > 0.01);
       var hot = o > 0.5;

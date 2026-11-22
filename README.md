@@ -34,6 +34,6 @@ Ardından `http://localhost:4500` adresini açın.
 ## Notlar
 
 - **Kafe saatleri yer tutucudur.** recoltecoffee.com'da yayınlanmıyor. Yayından önce `index.html` ve `en.html` içindeki ilgili satırı güncelleyin.
-- **Hareketi azalt:** Film her zaman oynar, çünkü yalnızca kaydırınca ilerler. Sistemde "hareketi azalt" açıksa kaydırma ataleti, özel imleç ve metin bulanıklığı kapanır. Ziyaretçi "Hareketi azalt" düğmesiyle filmi tamamen kapatabilir.
+- **Hareketi azalt:** Film ve tam akış (kaydırma ataleti, metin geçişleri, imleç) varsayılan olarak herkes için açıktır; film yalnızca kaydırınca ilerler. Sistemde "hareketi azalt" açık olan ziyaretçiler header'daki "Hareketi azalt" düğmesiyle hareketi kapatabilir; seçim tarayıcıda hatırlanır.
 - **Sepet ve abonelik:** Sepet yalnızca bir önizlemedir. Ödeme ve abonelik kaydı recoltecoffee.com'da yapılır.
 - **Ürün bilgileri:** Ürünler, tadım notları ve fiyatlar recoltecoffee.com'dan alınmıştır (Kasım 2026).
