@@ -578,6 +578,7 @@
   });
   renderBag();
 
+  var STOP_DURATION_MS = 3500;
   var pendingStop = null;
   function openSheet(dlg) { if (!dlg || dlg.open) return; dlg.showModal(); }
   [bagDlg, menuDlg].forEach(function (dlg) {
@@ -588,13 +589,24 @@
   $('[data-bag-open]').addEventListener('click', function () { openSheet(bagDlg); });
   $('[data-menu-open]').addEventListener('click', function () { openSheet(menuDlg); });
 
-  function moveToStop(v) {
-    pendingStop = v;
-    scrollTo({ top: Math.round(worldTop + v * VH), behavior: reduce ? 'instant' : 'smooth' });
+  function moveToStop(v, focusTarget) {
+    var from = scrollY;
+    var immediate = reduce || Math.abs(from - (worldTop + v * VH)) < 1;
+    pendingStop = { v: v, from: from, start: performance.now(), immediate: immediate, focus: focusTarget };
+  }
+
+  function advanceStop(now) {
+    if (!pendingStop) return;
+    var move = pendingStop;
+    var progress = move.immediate ? 1 : clamp01((now - move.start) / STOP_DURATION_MS);
+    var y = lerp(move.from, worldTop + move.v * VH, smooth(progress));
+    scrollTo({ top: Math.round(y), behavior: 'instant' });
+    if (progress === 1) pendingStop = null;
+    return progress === 1 ? move.focus : null;
   }
 
   function stepStop(direction) {
-    var here = pendingStop === null ? (scrollY - worldTop) / VH : pendingStop;
+    var here = pendingStop ? pendingStop.v : (scrollY - worldTop) / VH;
     var next = direction > 0
       ? anchors.find(function (a) { return a.v > here + 2 / VH; })
       : anchors.slice().reverse().find(function (a) { return a.v < here - 2 / VH; });
@@ -638,12 +650,9 @@
   addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') pendingStop = null; });
   function goTo(id) {
     if (!(id in GO)) return false;
-    moveToStop(GO[id]);
-    var target = document.getElementById(id);
-    if (target && id !== 'film') {
-      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-      setTimeout(function () { target.focus({ preventScroll: true }); }, reduce ? 50 : 1400);
-    }
+    var target = id === 'film' ? null : document.getElementById(id);
+    if (target && !target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    moveToStop(GO[id], target);
     return true;
   }
   document.addEventListener('click', function (e) {
@@ -792,9 +801,9 @@
   var grain = $('.sc-grain'), lastY = -1, vel = 0, lastVelText = '', lastBar = '', lastTc = '', time0 = performance.now();
   var lastV = -1, arch;
   function frame(now) {
+    var focusTarget = advanceStop(now);
     var y = scrollY;
     var v = Math.max(0, (y - worldTop) / VH);
-    if (pendingStop !== null && Math.abs(v - pendingStop) * VH < 2) pendingStop = null;
     var sceneChanged = layoutDirty || v !== lastV;
     if (sceneChanged) arch = archFrame(v);
     var t = filmFrame(v);
@@ -817,6 +826,7 @@
       lastV = v;
       layoutDirty = false;
     }
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
     brewFrame(v);
     pointerFrame();
 
