@@ -1,9 +1,9 @@
 /* =========================================================================
-   Récolte: one continuous world, driven by a single unbroken clip.
+   RÃ©colte: one continuous world, driven by a single unbroken clip.
 
    The page is a tall track with one pinned stage (as on pear.no). Scroll
    position along the track, measured in viewport-heights, decides:
-     - which second of the café walk-through is on screen (one pace for the
+     - which second of the cafÃ© walk-through is on screen (one pace for the
        whole film, slower than feels necessary, lerped playhead);
      - how much the footage blurs and dims behind content (depth of field);
      - how far the footage has dissolved, in halftone cells, into linen paper;
@@ -48,10 +48,10 @@
 
   var isTR = (root.getAttribute('lang') || '').slice(0, 2) === 'tr';
   var L = isTR ? {
-    phases: ['Şarj', 'Dönüş noktası', 'Kuruma', 'Sararma', 'Maillard', 'İlk çatlama', 'Gelişim', 'Boşaltma'],
+    phases: ['Åžarj', 'DÃ¶nÃ¼ÅŸ noktasÄ±', 'Kuruma', 'Sararma', 'Maillard', 'Ä°lk Ã§atlama', 'GeliÅŸim', 'BoÅŸaltma'],
     pause: 'Duraklat', again: 'Yeniden demle', along: 'Birlikte demle',
-    notesOpen: 'Notları kapat', notes: 'Tadım notları', add: 'Sepete ekle', added: 'Eklendi',
-    fewer: 'Bir azalt', more: 'Bir artır', soundOn: 'Ses açık', soundOff: 'Ses kapalı'
+    notesOpen: 'NotlarÄ± kapat', notes: 'TadÄ±m notlarÄ±', add: 'Sepete ekle', added: 'Eklendi',
+    fewer: 'Bir azalt', more: 'Bir artÄ±r', soundOn: 'Ses aÃ§Ä±k', soundOff: 'Ses kapalÄ±'
   } : {
     phases: ['Charge', 'Turning point', 'Drying', 'Yellowing', 'Maillard', 'First crack', 'Development', 'Drop'],
     pause: 'Pause', again: 'Brew again', along: 'Brew along',
@@ -119,6 +119,8 @@
     worldTop = world.getBoundingClientRect().top + scrollY;
     var s = slot.getBoundingClientRect(), st = pin.getBoundingClientRect();
     slotBox = { t: s.top - st.top, l: s.left - st.left, r: st.right - s.right, b: st.bottom - s.bottom, w: s.width };
+    railOverflow = rail ? Math.max(0, rail.scrollWidth - pin.clientWidth) : 0;
+    layoutDirty = true;
     if (gl) sizeCanvas();
   }
 
@@ -130,7 +132,7 @@
   var stills = $$('img', stillsWrap).map(function (img) { return { img: img, at: parseFloat(img.getAttribute('data-at')), on: false }; });
   var still = null;
   var film = { ready: false, primed: false, painted: false, cur: 0, target: 0, lastUp: -1 };
-  var DPR = Math.min(window.devicePixelRatio || 1, small ? 2 : 1.5);
+  var layoutDirty = true;
 
   var VS = 'attribute vec2 p; varying vec2 vUv; void main(){ vUv = p * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }';
   var FS = [
@@ -153,11 +155,11 @@
     '  else {',
     '    vec3 acc = vec3(0.0);',
     '    vec2 rad = uBlur * uDpr / uRes * s;',
-    '    for (int i = 0; i < 18; i++) {',
-    '      float fi = float(i); float r = sqrt((fi + 0.5) / 18.0); float a = fi * 2.39996;',
+    '    for (int i = 0; i < 8; i++) {',
+    '      float fi = float(i); float r = sqrt((fi + 0.5) / 8.0); float a = fi * 2.39996;',
     '      acc += texture2D(uTex, uv + vec2(cos(a), sin(a)) * r * rad).rgb;',
     '    }',
-    '    col = acc / 18.0;',
+    '    col = acc / 8.0;',
     '  }',
     '  col *= 1.0 - uDim;',
     '  if (uDis > 0.001) {',
@@ -212,17 +214,19 @@
     return true;
   }
   function sizeCanvas() {
-    var w = Math.round(pin.clientWidth * DPR), h = Math.round(pin.clientHeight * DPR);
+    var scale = Math.min(window.devicePixelRatio || 1, 1.5,
+      Math.sqrt(1920 * 1080 / Math.max(1, pin.clientWidth * pin.clientHeight)));
+    var w = Math.max(1, Math.round(pin.clientWidth * scale)), h = Math.max(1, Math.round(pin.clientHeight * scale));
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
     gl.viewport(0, 0, w, h);
     gl.uniform2f(U.uRes, w, h);
-    gl.uniform1f(U.uDpr, DPR);
+    gl.uniform1f(U.uDpr, scale);
     dirty = true;
   }
   function upload(src, w, h) {
     try {
       gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, src);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       if (w && h && (w !== texSize[0] || h !== texSize[1])) { texSize = [w, h]; gl.uniform2f(U.uTexSize, w, h); }
       dirty = true;
       return true;
@@ -263,11 +267,6 @@
     film.target = filmTime(v);
     film.cur = reduce ? film.target : lerp(film.cur, film.target, 0.14);
     if (Math.abs(film.cur - film.target) < 0.0005) film.cur = film.target;
-    var deadband = (small || coarse) ? 1 / 20 : 1 / 48;
-    if (film.ready && !video.seeking && Math.abs(video.currentTime - film.cur) > deadband) {
-      try { video.currentTime = film.cur; } catch (e) {}
-    }
-
     // Once the clip has painted it owns the texture for good. During a seek the decoder
     // drops to HAVE_METADATA for a moment; falling back to a still there flashed a frame
     // from a different second at every scene boundary. Hold the last real frame instead.
@@ -288,6 +287,17 @@
         var on = s === p;
         if (on !== s.on) { s.on = on; s.img.style.opacity = on ? '1' : '0'; }
       });
+    }
+    // Present the completed seek before starting another one. Setting currentTime
+    // immediately makes the decoder unavailable for the next texture upload.
+    // Both encodes are 24 fps. Seek to a frame centre so rounding in the
+    // media clock cannot land just before the intended frame boundary.
+    if (film.ready && !video.seeking) {
+      var frameIndex = Math.min(Math.floor(film.cur * 24), Math.ceil(DUR * 24) - 1);
+      var seekTime = Math.min((frameIndex + 0.5) / 24, video.duration - 0.001);
+      if (Math.floor(video.currentTime * 24) !== frameIndex) {
+        try { video.currentTime = seekTime; } catch (e) {}
+      }
     }
     return film.cur;
   }
@@ -346,13 +356,11 @@
   var rail = $('[data-rail]');
   var railWin = rail ? $('#origins') : null;
   var railRange = railWin ? railWin.getAttribute('data-rail-range').split(/\s+/).map(parseFloat) : [0, 1];
-  var railX = -1;
+  var railX = -1, railOverflow = 0;
   function railFrame(v) {
     if (!rail) return;
-    var over = rail.scrollWidth - pin.clientWidth;
-    if (over <= 0) return;
     var p = smooth((v - railRange[0]) / (railRange[1] - railRange[0]));
-    var x = Math.round(-over * p * 10) / 10;
+    var x = Math.round(-railOverflow * p * 10) / 10;
     if (x !== railX) { railX = x; rail.style.transform = 'translate3d(' + x + 'px,0,0)'; }
   }
 
@@ -423,37 +431,37 @@
      --------------------------------------------------------------------- */
   var RECIPES_EN = {
     v60: { total: 180,
-      rows: [['coffee', '15 g, medium-fine'], ['water', '250 g at 93 °C'], ['ratio', '1 : 16.7'], ['time', 'about 3:00']],
+      rows: [['coffee', '15 g, medium-fine'], ['water', '250 g at 93 Â°C'], ['ratio', '1 : 16.7'], ['time', 'about 3:00']],
       keys: [[0, 0], [10, 45], [45, 45], [70, 150], [75, 150], [100, 250], [180, 250]],
       steps: [[0, 'Bloom with 45 g. Swirl so every ground is wet.'], [45, 'Pour in slow circles to 150 g.'], [75, 'Pour to 250 g, staying off the paper.'], [105, 'One gentle swirl to flatten the bed.'], [180, 'Drawdown ends near 3:00. Taste it warm, then cooler.']],
       pair: 'Try it with <b>Rwanda Red Bourbon</b>: tangerine and green tea open up in a light cone.' },
     chemex: { total: 240,
-      rows: [['coffee', '30 g, medium-coarse'], ['water', '500 g at 94 °C'], ['ratio', '1 : 16.7'], ['time', 'about 4:00']],
+      rows: [['coffee', '30 g, medium-coarse'], ['water', '500 g at 94 Â°C'], ['ratio', '1 : 16.7'], ['time', 'about 4:00']],
       keys: [[0, 0], [12, 60], [45, 60], [80, 250], [90, 250], [125, 400], [135, 400], [160, 500], [240, 500]],
       steps: [[0, 'Rinse the paper, then bloom with 60 g.'], [45, 'Pour to 250 g, centre outwards.'], [90, 'Pour to 400 g and let it settle.'], [135, 'Finish at 500 g.'], [240, 'Drawdown ends near 4:00. Lift the filter and swirl.']],
-      pair: 'Try it with <b>Colombia Supremo Medellín</b>: the thick paper keeps green apple bright and clean.' },
+      pair: 'Try it with <b>Colombia Supremo MedellÃ­n</b>: the thick paper keeps green apple bright and clean.' },
     espresso: { total: 30,
-      rows: [['dose', '18 g, fine'], ['yield', '36 g'], ['ratio', '1 : 2'], ['water', '93 °C, 27 to 30 s']],
+      rows: [['dose', '18 g, fine'], ['yield', '36 g'], ['ratio', '1 : 2'], ['water', '93 Â°C, 27 to 30 s']],
       keys: [[0, 0], [6, 0], [28, 36], [30, 36]],
       steps: [[0, 'Level, tamp and start the shot.'], [6, 'First drops, the colour of honey.'], [16, 'A steady stream, tiger-striped.'], [28, 'Stop at 36 g. Stir the crema in.']],
       pair: 'Try it with <b>Ember Africa Pasific</b>: cocoa and nuts, made for the classic double.' }
   };
   var RECIPES_TR = {
     v60: { total: 180,
-      rows: [['kahve', '15 g, orta-ince'], ['su', '250 g, 93 °C'], ['oran', '1 : 16.7'], ['süre', 'yaklaşık 3:00']],
+      rows: [['kahve', '15 g, orta-ince'], ['su', '250 g, 93 Â°C'], ['oran', '1 : 16.7'], ['sÃ¼re', 'yaklaÅŸÄ±k 3:00']],
       keys: RECIPES_EN.v60.keys,
-      steps: [[0, '45 g ile demlendirin. Tüm telve ıslansın diye hafifçe çevirin.'], [45, 'Yavaş dairelerle 150 g\'a kadar dökün.'], [75, 'Kâğıda değdirmeden 250 g\'a tamamlayın.'], [105, 'Yatağı düzlemek için bir kez nazikçe çevirin.'], [180, 'Süzülme 3:00 civarında biter. Önce sıcak, sonra ılık tadın.']],
-      pair: '<b>Rwanda Red Bourbon</b> ile deneyin: mandalina ve yeşil çay açık bir konide öne çıkar.' },
+      steps: [[0, '45 g ile demlendirin. TÃ¼m telve Ä±slansÄ±n diye hafifÃ§e Ã§evirin.'], [45, 'YavaÅŸ dairelerle 150 g\'a kadar dÃ¶kÃ¼n.'], [75, 'KÃ¢ÄŸÄ±da deÄŸdirmeden 250 g\'a tamamlayÄ±n.'], [105, 'YataÄŸÄ± dÃ¼zlemek iÃ§in bir kez nazikÃ§e Ã§evirin.'], [180, 'SÃ¼zÃ¼lme 3:00 civarÄ±nda biter. Ã–nce sÄ±cak, sonra Ä±lÄ±k tadÄ±n.']],
+      pair: '<b>Rwanda Red Bourbon</b> ile deneyin: mandalina ve yeÅŸil Ã§ay aÃ§Ä±k bir konide Ã¶ne Ã§Ä±kar.' },
     chemex: { total: 240,
-      rows: [['kahve', '30 g, orta-kalın'], ['su', '500 g, 94 °C'], ['oran', '1 : 16.7'], ['süre', 'yaklaşık 4:00']],
+      rows: [['kahve', '30 g, orta-kalÄ±n'], ['su', '500 g, 94 Â°C'], ['oran', '1 : 16.7'], ['sÃ¼re', 'yaklaÅŸÄ±k 4:00']],
       keys: RECIPES_EN.chemex.keys,
-      steps: [[0, 'Kâğıdı ıslatın, ardından 60 g ile demlendirin.'], [45, 'Merkezden dışa doğru 250 g\'a dökün.'], [90, '400 g\'a dökün ve oturmasını bekleyin.'], [135, '500 g\'da bitirin.'], [240, 'Süzülme 4:00 civarında biter. Filtreyi kaldırıp çevirin.']],
-      pair: '<b>Colombia Supremo Medellín</b> ile deneyin: kalın kâğıt yeşil elmayı canlı ve berrak tutar.' },
+      steps: [[0, 'KÃ¢ÄŸÄ±dÄ± Ä±slatÄ±n, ardÄ±ndan 60 g ile demlendirin.'], [45, 'Merkezden dÄ±ÅŸa doÄŸru 250 g\'a dÃ¶kÃ¼n.'], [90, '400 g\'a dÃ¶kÃ¼n ve oturmasÄ±nÄ± bekleyin.'], [135, '500 g\'da bitirin.'], [240, 'SÃ¼zÃ¼lme 4:00 civarÄ±nda biter. Filtreyi kaldÄ±rÄ±p Ã§evirin.']],
+      pair: '<b>Colombia Supremo MedellÃ­n</b> ile deneyin: kalÄ±n kÃ¢ÄŸÄ±t yeÅŸil elmayÄ± canlÄ± ve berrak tutar.' },
     espresso: { total: 30,
-      rows: [['doz', '18 g, ince'], ['verim', '36 g'], ['oran', '1 : 2'], ['su', '93 °C, 27-30 sn']],
+      rows: [['doz', '18 g, ince'], ['verim', '36 g'], ['oran', '1 : 2'], ['su', '93 Â°C, 27-30 sn']],
       keys: RECIPES_EN.espresso.keys,
-      steps: [[0, 'Düzleyin, tamp edin ve shot\'u başlatın.'], [6, 'İlk damlalar, bal renginde.'], [16, 'Kaplan çizgili, düzenli bir akış.'], [28, '36 g\'da durdurun. Kremayı karıştırın.']],
-      pair: '<b>Ember Africa Pasific</b> ile deneyin: kakao ve kuruyemiş, klasik double için.' }
+      steps: [[0, 'DÃ¼zleyin, tamp edin ve shot\'u baÅŸlatÄ±n.'], [6, 'Ä°lk damlalar, bal renginde.'], [16, 'Kaplan Ã§izgili, dÃ¼zenli bir akÄ±ÅŸ.'], [28, '36 g\'da durdurun. KremayÄ± karÄ±ÅŸtÄ±rÄ±n.']],
+      pair: '<b>Ember Africa Pasific</b> ile deneyin: kakao ve kuruyemiÅŸ, klasik double iÃ§in.' }
   };
   var RECIPES = isTR ? RECIPES_TR : RECIPES_EN;
   var brewEl = $('#brew');
@@ -550,7 +558,7 @@
   var bagDlg = $('[data-bag]'), menuDlg = $('[data-menu]');
   function load() { try { return JSON.parse(localStorage.getItem('recolte-bag') || '[]') || []; } catch (e) { return []; } }
   function save() { try { localStorage.setItem('recolte-bag', JSON.stringify(bag)); } catch (e) {} }
-  var tl = function (n) { try { return '₺' + n.toLocaleString('tr-TR'); } catch (e) { return '₺' + n; } };
+  var tl = function (n) { try { return 'â‚º' + n.toLocaleString('tr-TR'); } catch (e) { return 'â‚º' + n; } };
   function renderBag() {
     $('[data-bag-count]').textContent = bag.reduce(function (s, i) { return s + i.qty; }, 0);
     var list = $('[data-bag-list]'); list.innerHTML = '';
@@ -629,12 +637,12 @@
       var g = bags * 250, dose = method === 'filter' ? 15 : method === 'espresso' ? 18 : 16.5;
       var cups = Math.floor(g / dose), monthly = every === 2 ? g * 2 : g, s, math;
       if (isTR) {
-        var cTR = { 1: 'bir paket', 2: 'iki paket', 3: 'üç paket' };
+        var cTR = { 1: 'bir paket', 2: 'iki paket', 3: 'Ã¼Ã§ paket' };
         var mTR = { filter: 'filtre kavrum', espresso: 'espresso kavrum', both: 'filtre ve espresso kavrum' };
-        var gTR = { whole: 'çekirdek halinde', v60: 'V60 için öğütülmüş', chemex: 'Chemex için öğütülmüş', espresso: 'espresso için öğütülmüş', press: 'French press için öğütülmüş' };
+        var gTR = { whole: 'Ã§ekirdek halinde', v60: 'V60 iÃ§in Ã¶ÄŸÃ¼tÃ¼lmÃ¼ÅŸ', chemex: 'Chemex iÃ§in Ã¶ÄŸÃ¼tÃ¼lmÃ¼ÅŸ', espresso: 'espresso iÃ§in Ã¶ÄŸÃ¼tÃ¼lmÃ¼ÅŸ', press: 'French press iÃ§in Ã¶ÄŸÃ¼tÃ¼lmÃ¼ÅŸ' };
         var nf = function (n) { return n.toLocaleString('tr-TR'); };
-        s = (every === 2 ? 'İki haftada bir' : 'Ayda bir') + ', ' + gTR[f.grind.value] + ' ' + cTR[bags] + ' ' + mTR[method] + (f.surprise.checked ? ', sürpriz harman da dahil.' : '.');
-        math = 'Her teslimatta ' + nf(g) + ' g, ' + nf(dose) + ' g ile yaklaşık ' + cups + (method === 'espresso' ? ' double' : ' fincan') + '. Ayda ' + nf(monthly) + ' g.';
+        s = (every === 2 ? 'Ä°ki haftada bir' : 'Ayda bir') + ', ' + gTR[f.grind.value] + ' ' + cTR[bags] + ' ' + mTR[method] + (f.surprise.checked ? ', sÃ¼rpriz harman da dahil.' : '.');
+        math = 'Her teslimatta ' + nf(g) + ' g, ' + nf(dose) + ' g ile yaklaÅŸÄ±k ' + cups + (method === 'espresso' ? ' double' : ' fincan') + '. Ayda ' + nf(monthly) + ' g.';
       } else {
         var words = { 1: 'One bag', 2: 'Two bags', 3: 'Three bags' };
         var mEN = { filter: 'filter roasts', espresso: 'espresso roasts', both: 'filter and espresso roasts' };
@@ -686,7 +694,7 @@
   }
 
   /* ---------------------------------------------------------------------
-     10. Ambient café sound (opt-in, generated, never autoplayed)
+     10. Ambient cafÃ© sound (opt-in, generated, never autoplayed)
      --------------------------------------------------------------------- */
   var soundBtns = $$('[data-sound]'), audio = null;
   function buildAudio() {
@@ -749,27 +757,34 @@
   loadFilm();
 
   var grain = $('.sc-grain'), lastY = -1, vel = 0, lastVelText = '', lastBar = '', lastTc = '', time0 = performance.now();
+  var lastV = -1, arch;
   function frame(now) {
     if (lenis) lenis.raf(now);
     var y = scrollY;
     var v = Math.max(0, (y - worldTop) / VH);
-    var arch = archFrame(v);
+    var sceneChanged = layoutDirty || v !== lastV;
+    if (sceneChanged) arch = archFrame(v);
     var t = filmFrame(v);
     var blur = reduce ? 0 : fx(FX.blur, v), dim = fx(FX.dim, v), dis = fx(FX.dis, v);
-    if (gl) {
+    if (gl && (sceneChanged || dirty)) {
+      dirty = false;
       gl.uniform1f(U.uZoom, arch.zoom);
       gl.uniform1f(U.uBlur, blur);
       gl.uniform1f(U.uDim, dim);
       gl.uniform1f(U.uDis, dis);
       gl.uniform1f(U.uTime, ((now - time0) / 1000) % 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-    } else {
+    } else if (!gl) {
       paperEl.style.opacity = dis.toFixed(3);
       stillsWrap.style.filter = dim > 0.01 ? 'brightness(' + (1 - dim).toFixed(3) + ')' : '';
     }
-    chapterFrame(v);
-    railFrame(v);
-    roastFrame(v);
+    if (sceneChanged) {
+      chapterFrame(v);
+      railFrame(v);
+      roastFrame(v);
+      lastV = v;
+      layoutDirty = false;
+    }
     brewFrame(v);
     pointerFrame();
 
