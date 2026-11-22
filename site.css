@@ -535,3 +535,45 @@ html.sys-reduce .tool--motion { display: inline-flex; }
 /* Vertical swipes step through the film. Cards and pinch zoom stay native. */
 .world__pin, .rail, .bar, .roast { touch-action: pan-x pinch-zoom; }
 html:has(.sheet[open]) { overflow: hidden; }
+
+/* The film loads behind a porcelain demitasse viewed from above. */
+.tour-loader {
+  position: fixed; inset: 0; margin: 0; padding: 0; border: 0;
+  width: 100%; height: 100%; max-width: none; max-height: none;
+  color: var(--graphite); background: var(--linen); text-align: center;
+}
+.tour-loader[open] { display: grid; place-content: center; justify-items: center; }
+.tour-loader::backdrop { background: var(--linen); }
+html:has(.tour-loader[open]) { overflow: hidden; }
+.tour-loader__cup {
+  position: relative; width: 6rem; aspect-ratio: 1; border-radius: 50%;
+  background: linear-gradient(135deg, #fffaf2, #d6c8b7);
+  box-shadow: 4px 8px 12px #4c362523, inset 0 0 0 1px #a3948066;
+}
+.tour-loader__cup::before {
+  content: ''; position: absolute; left: 94%; top: 39%; width: 24%; height: 21%;
+  border: 5px solid #dfd3c2; border-left: 0; border-radius: 0 60% 60% 0;
+  transform: rotate(-9deg); box-shadow: 2px 3px 4px #4c362518;
+}
+.tour-loader__cup i {
+  position: absolute; inset: 7%; overflow: hidden; border-radius: 50%;
+  background: #ae743f; box-shadow: inset 0 0 0 1px #986239;
+}
+.tour-loader__cup i::after {
+  content: ''; position: absolute; inset: 3% 2% 4%; border-radius: 48% 53% 46% 52%;
+  background: radial-gradient(ellipse at 30% 22%, #af7959 0%, #75442d 12%, #422616 43%, #281a12 83%);
+  box-shadow: -2px 1px 3px #e6b578;
+  animation: crema-sway 1.9s ease-in-out infinite alternate;
+}
+@keyframes crema-sway {
+  from { transform: translate(-2%, 2%) rotate(-12deg); }
+  to { transform: translate(3%, -2%) rotate(14deg); }
+}
+.tour-loader__brand { margin-top: 1.9rem; font: 300 2.35rem/1.1 var(--sc-font-display); }
+.tour-loader__status { margin-top: .65rem; color: #695240; font: .75rem/1.5 var(--sc-font-mono); }
+@media (prefers-reduced-motion: reduce) { .tour-loader__cup i::after { animation: none; } }
+.is-reduced .tour-loader__cup i::after { animation: none; }
+.tour-loader__continue {
+  margin-top: 1rem; padding: .5rem 1rem; color: var(--bronze-deep);
+  background: transparent; border: 0; text-decoration: underline; cursor: pointer;
+}

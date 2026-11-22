@@ -9,17 +9,42 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 30V15a10 10 0 0 1 20 0v15z' fill='%23c78a59'/></svg>">
 <link rel="alternate" hreflang="en" href="en.html">
 <link rel="alternate" hreflang="tr" href="index.html">
+<script>
+try {
+  if (localStorage.getItem('recolte-motion') !== 'reduced') {
+    var clip = document.createElement('link');
+    clip.rel = 'preload';
+    clip.as = 'fetch';
+    clip.crossOrigin = 'anonymous';
+    clip.href = matchMedia('(max-width: 860px), (pointer: coarse)').matches
+      ? 'public/video/walk-m.mp4' : 'public/video/walk.mp4';
+    document.head.appendChild(clip);
+  }
+} catch (_) {}
+</script>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,300i&f[]=switzer@400,500,600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,300i&f[]=switzer@400,500,600&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
 <link rel="preload" as="image" href="public/img/poster.webp" media="(min-width: 861px)">
 <link rel="preload" as="image" href="public/img/poster-m.webp" media="(max-width: 860px)">
 <link rel="stylesheet" href="scrollcraft.css">
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
+<dialog class="tour-loader" aria-label="Preparing the café tour">
+  <div class="tour-loader__cup" aria-hidden="true"><i></i></div>
+  <span class="tour-loader__brand">Récolte</span>
+  <span class="tour-loader__status" role="status">Preparing the café tour</span>
+  <form method="dialog" hidden><button class="tour-loader__continue">Continue to site</button></form>
+</dialog>
+<script>
+  var tourLoader = document.querySelector('.tour-loader');
+  tourLoader.showModal();
+  // Keep the page accessible if the application script or video stalls.
+  setTimeout(function () { if (tourLoader.open) tourLoader.querySelector('form').hidden = false; }, 18000);
+</script>
 
 <a class="skip" href="#origins">Skip to the coffees</a>
 <div class="sc-grain" aria-hidden="true"></div>

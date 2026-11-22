@@ -237,10 +237,20 @@
     } catch (e) { return false; }
   }
 
+  var loader = $('.tour-loader');
+  function finishLoading() {
+    if (loader.open) loader.close();
+  }
+  function showPoster() {
+    var img = pickStill(film.cur).img;
+    img.decode().then(finishLoading, finishLoading);
+  }
+
   function loadFilm() {
-    if (reduce || !video) return;
+    if (reduce || !gl || !video) { showPoster(); return; }
     var src = (small || coarse) ? video.getAttribute('data-src-mobile') : video.getAttribute('data-src');
     fetch(src).then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); }).then(function (blob) {
+      video.addEventListener('error', showPoster, { once: true });
       video.addEventListener('loadedmetadata', function () {
         film.ready = true;
         prime();
@@ -249,7 +259,7 @@
       video.addEventListener('seeked', function () { film.painted = true; dirty = true; film.lastUp = -1; });
       video.muted = true; video.playsInline = true; video.preload = 'auto';
       video.src = URL.createObjectURL(blob);
-    }).catch(function () { /* stills carry the film */ });
+    }).catch(showPoster);
   }
   // iOS keeps a seeked-but-never-played video blank; one muted play primes the decoder
   function prime() {
@@ -579,7 +589,7 @@
   });
   renderBag();
 
-  var STOP_DURATION_MS = 3500;
+  var STOP_DURATION_MS = 2500;
   var pendingStop = null;
   function openSheet(dlg) { if (!dlg || dlg.open) return; dlg.showModal(); }
   [bagDlg, menuDlg].forEach(function (dlg) {
@@ -636,7 +646,7 @@
   }
 
   function gestureAllowed(e) {
-    return !bagDlg.open && !menuDlg.open && !e.target.closest?.('select, textarea, [contenteditable="true"]');
+    return !loader.open && !bagDlg.open && !menuDlg.open && !e.target.closest?.('select, textarea, [contenteditable="true"]');
   }
 
   // A trackpad sends a tail of wheel events after the fingers lift.
@@ -853,6 +863,7 @@
       gl.uniform1f(U.uDis, dis);
       gl.uniform1f(U.uTime, ((now - time0) / 1000) % 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      if (film.lastUp >= 0 && loader.open) finishLoading();
     } else if (!gl) {
       paperEl.style.opacity = dis.toFixed(3);
       stillsWrap.style.filter = dim > 0.01 ? 'brightness(' + (1 - dim).toFixed(3) + ')' : '';
