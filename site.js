@@ -111,6 +111,9 @@
   var GO = { film: 0 };
   chapters.forEach(function (c) { if (c.el.id) GO[c.el.id] = c.b + 0.05; });
 
+  var brewEl = $('#brew');
+  var brewRange = brewEl.getAttribute('data-brew-range').split(/\s+/).map(parseFloat);
+  GO.brew = brewRange[0];
   GO.visit = END;
 
   function measure() {
@@ -453,8 +456,6 @@
       pair: '<b>Ember Africa Pasific</b> ile deneyin: kakao ve kuruyemiş, klasik double için.' }
   };
   var RECIPES = isTR ? RECIPES_TR : RECIPES_EN;
-  var brewEl = $('#brew');
-  var brewRange = brewEl ? brewEl.getAttribute('data-brew-range').split(/\s+/).map(parseFloat) : [0, 1];
   var brew = { key: 'v60', t: -1, playing: false, manual: false, start: 0, lastG: '', lastC: '', lastStep: -2 };
   var bEls = brewEl && {
     grams: $('[data-brew-grams]'), clock: $('[data-brew-clock]'), target: $('[data-brew-target]'), fill: $('[data-brew-fill]'),
@@ -605,12 +606,33 @@
     return progress === 1 ? move.focus : null;
   }
 
+  var stops = anchors.map(function (a) { return a.v; }).concat(brewRange[1]);
+  [1.6, 5.8, 12.6, 14.4, 16.3].forEach(function (seconds) {
+    stops.push(seconds * PACE); // All five cues precede the paper interlude.
+  });
+  stops.sort(function (a, b) { return a - b; });
+
   function stepStop(direction) {
     var here = pendingStop ? pendingStop.v : (scrollY - worldTop) / VH;
+    if (pendingStop && brewRange.includes(here)) return;
     var next = direction > 0
-      ? anchors.find(function (a) { return a.v > here + 2 / VH; })
-      : anchors.slice().reverse().find(function (a) { return a.v < here - 2 / VH; });
-    if (next) moveToStop(next.v);
+      ? stops.find(function (v) { return v > here + 2 / VH; })
+      : stops.slice().reverse().find(function (v) { return v < here - 2 / VH; });
+    if (next !== undefined) moveToStop(next);
+  }
+
+  function brewPixel(i) { return Math.round(worldTop + brewRange[i] * VH); }
+
+  function inManualBrew(y, delta) {
+    if (y < brewPixel(0) || y > brewPixel(1)) return false;
+    if (pendingStop && y !== Math.round(worldTop + pendingStop.v * VH)) return false;
+    if (delta > 0 ? y >= brewPixel(1) : y <= brewPixel(0)) return false;
+    pendingStop = null;
+    return true;
+  }
+
+  function scrubBrew(y) {
+    scrollTo({ top: clamp(y, brewPixel(0), brewPixel(1)), behavior: 'instant' });
   }
 
   function gestureAllowed(e) {
@@ -618,23 +640,38 @@
   }
 
   // A trackpad sends a tail of wheel events after the fingers lift.
-  var wheelEnd, wheelTaken = false, wheelDelta = 0;
+  var wheelManual = false, wheelEnd, wheelTaken = false, wheelDelta = 0;
   addEventListener('wheel', function (e) {
     if (e.ctrlKey || e.shiftKey || !gestureAllowed(e) || Math.abs(e.deltaX) > Math.abs(e.deltaY) || !e.deltaY) return;
     e.preventDefault();
     clearTimeout(wheelEnd);
-    wheelEnd = setTimeout(function () { wheelTaken = false; wheelDelta = 0; }, 170);
+    wheelEnd = setTimeout(function () { wheelTaken = false; wheelManual = false; wheelDelta = 0; }, 170);
     if (wheelTaken) return;
-    wheelDelta += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? VH : 1);
+    var delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? VH : 1);
+    if (wheelManual || inManualBrew(scrollY, delta)) {
+      wheelManual = true;
+      scrubBrew(scrollY + delta);
+      return;
+    }
+    wheelDelta += delta;
     if (Math.abs(wheelDelta) >= 4) {
       wheelTaken = true;
       stepStop(Math.sign(wheelDelta));
     }
   }, { passive: false });
 
-  var swipe = null;
+  var swipe = null, swipeY = 0, swipeManual = false;
   addEventListener('touchstart', function (e) {
+    swipeManual = false;
+    swipeY = scrollY;
     swipe = e.touches.length === 1 && gestureAllowed(e) ? e.touches[0] : null;
+  }, { passive: true });
+  addEventListener('touchmove', function (e) {
+    if (!swipe || e.touches.length !== 1) return;
+    var dy = swipe.clientY - e.touches[0].clientY;
+    var dx = swipe.clientX - e.touches[0].clientX;
+    if (!swipeManual && Math.abs(dy) > Math.abs(dx) && inManualBrew(swipeY, dy)) swipeManual = true;
+    if (swipeManual) scrubBrew(swipeY + dy);
   }, { passive: true });
   addEventListener('touchcancel', function () { swipe = null; }, { passive: true });
   addEventListener('touchend', function (e) {
@@ -642,7 +679,7 @@
     var dx = swipe.clientX - e.changedTouches[0].clientX;
     var dy = swipe.clientY - e.changedTouches[0].clientY;
     swipe = null;
-    if (Math.abs(dy) >= 28 && Math.abs(dy) > Math.abs(dx)) stepStop(Math.sign(dy));
+    if (!swipeManual && Math.abs(dy) >= 28 && Math.abs(dy) > Math.abs(dx)) stepStop(Math.sign(dy));
   }, { passive: true });
 
   // Native keyboard and scrollbar navigation can interrupt a smooth jump.
@@ -830,7 +867,8 @@
     brewFrame(v);
     pointerFrame();
 
-    var tc = (t < 10 ? '0' : '') + Math.floor(t) + '.' + Math.floor((t % 1) * 10);
+    var tenths = Math.round(t * 10);
+    var tc = (tenths < 100 ? '0' : '') + Math.floor(tenths / 10) + '.' + (tenths % 10);
     if (tc !== lastTc && tcEl) { tcEl.textContent = '00:' + tc; lastTc = tc; }
     pin.style.setProperty('--code-o', arch.ee > 0.96 && (v < 7.3 || (v > 12.8 && v < 18.2)) ? '1' : '0');
     var bar = (arch.ee < 0.55 || dis > 0.5) ? 'light' : 'dark';
