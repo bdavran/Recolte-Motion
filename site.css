@@ -440,6 +440,12 @@ html[data-bar="dark"] .world__top { opacity: 1; }
 html.has-cursor .cursor { display: block; }
 html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor label, html.has-cursor [role="tab"] { cursor: none; }
 html.has-cursor :is(input[type="text"], input[type="email"], textarea, select) { cursor: auto; }
+/* Dialogs sit above the custom cursor in the browser's top layer. */
+html.has-cursor dialog, html.has-cursor dialog::backdrop { cursor: auto; }
+html.has-cursor .bean__add,
+html.has-cursor [data-bag-open],
+html.has-cursor dialog :is(a, button) { cursor: pointer; }
+html.has-cursor:has(dialog[open], .bean__add:hover, [data-bag-open]:hover) .cursor { display: none; }
 .cursor__ring, .cursor__dot { position: absolute; left: 0; top: 0; border-radius: 50%; will-change: transform; }
 .cursor__ring { width: 2.25rem; height: 2.25rem; margin: -1.125rem 0 0 -1.125rem; border: 1px solid var(--cursor-c, var(--bronze-deep)); transition: width 220ms var(--ease), height 220ms var(--ease), margin 220ms var(--ease), background-color 220ms var(--ease), border-color 220ms var(--ease), opacity 220ms var(--ease); }
 .cursor__dot { width: 0.3rem; height: 0.3rem; margin: -0.15rem 0 0 -0.15rem; background: var(--cursor-c, var(--bronze-deep)); }
