@@ -617,8 +617,8 @@
   }
 
   var stops = anchors.map(function (a) { return a.v; }).concat(brewRange[1]);
-  [1.6, 5.8, 12.6, 14.4, 16.3].forEach(function (seconds) {
-    stops.push(seconds * PACE); // All five cues precede the paper interlude.
+  [1.6, 5.8, 14.4, 16.3].forEach(function (seconds) {
+    stops.push(seconds * PACE); // These cues precede the paper interlude.
   });
   stops.sort(function (a, b) { return a - b; });
 
