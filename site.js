@@ -500,8 +500,8 @@
       t = (performance.now() - brew.start) / 1000;
       if (t >= r.total) { t = r.total; brew.t = t; setPlaying(false); }
     } else if (brew.manual) t = brew.t;
-    else t = clamp01((v - brewRange[0]) / (brewRange[1] - brewRange[0])) * r.total;
-    if (Math.abs(t - brew.t) < 0.01 && brew.lastG !== '') return;
+    else t = clamp01((scrollY - brewPixel(0)) / (brewPixel(1) - brewPixel(0))) * r.total;
+    if (t === brew.t && brew.lastG !== '') return;
     brew.t = t;
     var g = Math.round(gramsAt(r.keys, t)) + '';
     if (g !== brew.lastG) { bEls.grams.textContent = g; brew.lastG = g; }
@@ -600,19 +600,24 @@
   $('[data-bag-open]').addEventListener('click', function () { openSheet(bagDlg); });
   $('[data-menu-open]').addEventListener('click', function () { openSheet(menuDlg); });
 
-  function moveToStop(v, focusTarget) {
+  function moveToStop(v, focusTarget, duration) {
     var from = scrollY;
     var immediate = reduce || Math.abs(from - (worldTop + v * VH)) < 1;
-    pendingStop = { v: v, from: from, start: performance.now(), immediate: immediate, focus: focusTarget };
+    pendingStop = { v: v, from: from, start: performance.now(), immediate: immediate, duration: duration || STOP_DURATION_MS, focus: focusTarget };
   }
 
   function advanceStop(now) {
     if (!pendingStop) return;
     var move = pendingStop;
-    var progress = move.immediate ? 1 : clamp01((now - move.start) / STOP_DURATION_MS);
+    var progress = move.immediate ? 1 : clamp01((now - move.start) / move.duration);
     var y = lerp(move.from, worldTop + move.v * VH, smooth(progress));
     scrollTo({ top: Math.round(y), behavior: 'instant' });
-    if (progress === 1) pendingStop = null;
+    if (progress === 1) {
+      pendingStop = null;
+      if (move.v === brewRange[0] && !brew.playing && !brew.manual) {
+        moveToStop(brewRange[1], null, 3000);
+      }
+    }
     return progress === 1 ? move.focus : null;
   }
 
